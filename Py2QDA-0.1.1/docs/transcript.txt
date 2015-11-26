@@ -1,0 +1,13 @@
+[id1] hello I like the course
+
+[id2] I am struggling with the lecture slides
+
+[id3] no I think the slides are ok but I dont like all the assignments
+
+[id1] I am learning a lot and it is presented easily for me
+
+[id3] yes, I am learning a lot as well, its a good course
+
+[id1] yes I agree, it will be good for my career
+
+[id2] Hmm, I will ask the tutor for more help as I am really struggling

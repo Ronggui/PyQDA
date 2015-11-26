@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=PyQDA
+Type=Application
+Exec=python /usr/share/pyshared/PyQDA/PyQDA.py
+Icon=/usr/share/pixmaps/PyQDA.png
+Terminal=true
+Categories=Scientific
