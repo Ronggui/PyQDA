@@ -55,9 +55,9 @@ class Ui_Dialog_addItem(QtGui.QDialog):
         """ On pressing accept button, check there is no duplicate.
         If no duplicate then accept end close the dialog """
 
-        thisItem = str(self.lineEdit.text())
+        thisItem = str(self.lineEdit.text().toUtf8())
         duplicate = False
-        if thisItem in self.existingItems:
+        if thisItem.decode("utf-8") in self.existingItems:
             duplicate = True
             QtGui.QMessageBox.warning(None, "Duplicated", "This already exists", QtGui.QMessageBox.Ok)
         if duplicate==False:

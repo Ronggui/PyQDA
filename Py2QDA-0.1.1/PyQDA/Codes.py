@@ -186,8 +186,7 @@ class Ui_Dialog_codes(object):
             newid = 1
             for fc in self.freecode:
                 if fc['id'] >= newid: newid = fc['id']+1
-            #item = {'name':newCodeText.encode('raw_unicode_escape'), 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':""}
-            item = {'name':newCodeText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':""}
+            item = {'name':newCodeText.decode("utf-8"), 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':""}
             self.freecode.append(item)
             cur = self.settings['conn'].cursor()
             cur.execute("insert into freecode (name,memo,owner,date,dateM,id,status,color) values(?,?,?,?,?,?,?,?)"
