@@ -149,7 +149,8 @@ class Ui_Dialog_codes(object):
         x = self.tableWidget_codes.currentRow()
         y = self.tableWidget_codes.currentColumn()
         if y == self.NAME_COLUMN:
-            newCodeText = str(self.tableWidget_codes.item(x, y).text())
+            #newCodeText = str(self.tableWidget_codes.item(x, y).text())
+            newCodeText = str(self.tableWidget_codes.item(x, y).text().toUtf8())
             # check that no other code has this text and this is is not empty
             update = True
             if newCodeText == "":
@@ -185,7 +186,8 @@ class Ui_Dialog_codes(object):
             newid = 1
             for fc in self.freecode:
                 if fc['id'] >= newid: newid = fc['id']+1
-            item = {'name':newCodeText.encode('raw_unicode_escape'), 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':""}
+            #item = {'name':newCodeText.encode('raw_unicode_escape'), 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':""}
+            item = {'name':newCodeText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':""}
             self.freecode.append(item)
             cur = self.settings['conn'].cursor()
             cur.execute("insert into freecode (name,memo,owner,date,dateM,id,status,color) values(?,?,?,?,?,?,?,?)"
@@ -207,7 +209,8 @@ class Ui_Dialog_codes(object):
         for itemWidget in self.tableWidget_codes.selectedItems():
             tableRowsToDelete.append(int(itemWidget.row()))
             idsToDelete.append(int(self.tableWidget_codes.item(itemWidget.row(), self.ID_COLUMN).text()))
-            codeNamesToDelete = codeNamesToDelete+"\n" + str(self.tableWidget_codes.item(itemWidget.row(), self.NAME_COLUMN).text())
+            codeNamesToDelete = codeNamesToDelete+"\n" + str(self.tableWidget_codes.item(itemWidget.row(), self.NAME_COLUMN).text().toUtf8())
+            codeNamesToDelete = codeNamesToDelete.decode("utf-8")
             #print("X:"+ str(itemWidget.row()) + "  y:"+str(itemWidget.column()) +"  "+itemWidget.text() +"  id:"+str(self.tableWidget_codes.item(itemWidget.row(),3).text()))
         tableRowsToDelete.sort(reverse=True)
 
@@ -457,7 +460,8 @@ class Ui_Dialog_codes(object):
 
         # add new item to annotations, add to database and update GUI
         if item is None:
-            item = {'fid': int(self.filename['id']), 'position': selstart, 'annotation': str(annotation), 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':None, 'status':1}
+            #item = {'fid': int(self.filename['id']), 'position': selstart, 'annotation': str(annotation), 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':None, 'status':1}
+            item = {'fid': int(self.filename['id']), 'position': selstart, 'annotation': annotation, 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':None, 'status':1}
 
         Dialog_memo = QtGui.QDialog()
         ui = Ui_Dialog_memo(item['annotation'])
@@ -480,8 +484,10 @@ class Ui_Dialog_codes(object):
             self.annotations.append(item)
             self.highlight()
             cur = self.settings['conn'].cursor()
+            ##cur.execute("insert into annotation"+" (fid,position,annotation,owner,date,dateM,status) values(?,?,?,?,?,?,?)"
+            ##            ,(item['fid'],item['position'],item['annotation'].encode('raw_unicode_escape'),item['owner'],item['date'],item['dateM'],item['status']))
             cur.execute("insert into annotation"+" (fid,position,annotation,owner,date,dateM,status) values(?,?,?,?,?,?,?)"
-                        ,(item['fid'],item['position'],item['annotation'].encode('raw_unicode_escape'),item['owner'],item['date'],item['dateM'],item['status']))
+                        ,(item['fid'],item['position'],item['annotation'], item['owner'],item['date'],item['dateM'],item['status']))
             self.settings['conn'].commit()
 
     def autocode(self):

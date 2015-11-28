@@ -417,7 +417,7 @@ class MainView(QtGui.QMainWindow):
 
         if self.settings['projectName'] == "":
             self.statusBar().showMessage("Create new project")
-            self.qdaFileName = str(QtGui.QFileDialog.getSaveFileName(self, "Enter project name", self.settings['directory'], ".rqda"))
+            self.qdaFileName = str(QtGui.QFileDialog.getSaveFileName(self, "Enter project name", self.settings['directory'], ".rqda").toUtf8()).decode("utf-8")
             if self.qdaFileName == "":
                 QtGui.QMessageBox.warning(None, "Project","No project created.")
                 return
@@ -494,7 +494,7 @@ class MainView(QtGui.QMainWindow):
             self.closeProject()
 
         self.statusBar().showMessage("Open project")
-        self.qdaFileName = str(QtGui.QFileDialog.getOpenFileName(self, 'Open file', self.settings['directory']))
+        self.qdaFileName = str(QtGui.QFileDialog.getOpenFileName(self, 'Open file', self.settings['directory']).toUtf8()).decode("utf-8")
         if self.qdaFileName == "":
             return
         if len(self.qdaFileName) > 4 and self.qdaFileName[-5:] == ".rqda":

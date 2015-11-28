@@ -64,8 +64,9 @@ class Ui_Dialog_memo(QtGui.QDialog):
     def getMemo(self):
         """ Get the memo text """
 
-        return self.memo.encode('utf-8','replace')
-
+        #return self.memo.encode('utf-8','replace')
+        return self.memo
+    
     def getFilename(self):
         """ Get the filename for the manually entered new file """
 
