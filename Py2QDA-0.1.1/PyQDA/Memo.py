@@ -58,20 +58,20 @@ class Ui_Dialog_memo(QtGui.QDialog):
         """ Accepted button overridden method """
 
         self.memo = self.plainTextEdit.toPlainText()
-        self.memo = str(self.memo.toUtf8()).decode('utf-8')
+        self.memo = str(self.memo.toUtf8()).decode('utf-8') ## unicode
         self.Dialog_memo.accept()
 
     def getMemo(self):
         """ Get the memo text """
 
         #return self.memo.encode('utf-8','replace')
-        return self.memo
+        return self.memo ## unicode
     
     def getFilename(self):
         """ Get the filename for the manually entered new file """
 
-        filename = str(self.lineEdit_filename.text())
-        return filename.strip().encode('raw_unicode_escape')
+        filename = str(self.lineEdit_filename.text().toUtf8())
+        return filename.decode('utf-8').strip()
 
     def setupUi(self, Dialog_memo, title):
         self.title = title  #ADDIN

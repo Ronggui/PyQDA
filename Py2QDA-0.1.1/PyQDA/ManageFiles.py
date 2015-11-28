@@ -132,9 +132,7 @@ class Ui_Dialog_manageFiles(object):
                    +self.sourcetext[x]['owner'] + ", " + self.sourcetext[x]['date'])
         Dialog_memo.exec_()
         # update model and database
-        fileText = ui.getMemo()
-        #fileText = fileText.decode('unicode-escape')
-        fileText = fileText.decode('utf-8')
+        fileText = ui.getMemo() ## unicode
         if fileText != self.sourcetext[x]['file']:
             # NEED TO CHECK THAT THERE ARE NO CODES OR ANNOATIONS OR CASES LINKED TO THIS FILE BEFORE COMMITING CHANGE
             # CHECK NOT YET IMPLEMENTED
