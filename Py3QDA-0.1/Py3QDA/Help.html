@@ -1,0 +1,347 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="LibreOffice 4.1.2.3 (Linux)">
+	<META NAME="AUTHOR" CONTENT="colin-2 ">
+	<META NAME="CREATED" CONTENT="20131006;91502000000000">
+	<META NAME="CHANGEDBY" CONTENT="colin-2 ">
+	<META NAME="CHANGED" CONTENT="20131103;114550312852366">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		H1 { margin-bottom: 0.21cm }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H1.cjk { font-family: "DejaVu Sans"; font-size: 16pt }
+		H1.ctl { font-family: "Lohit Hindi"; font-size: 16pt }
+		H2 { margin-bottom: 0.21cm }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Lohit Hindi"; font-size: 14pt; font-style: italic }
+		H3 { margin-bottom: 0.21cm }
+		H3.western { font-family: "Arial", sans-serif }
+		H3.ctl { font-family: "Lohit Hindi" }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H1 CLASS="western">Overview</H1>
+<P STYLE="margin-bottom: 0cm">The various functions of the software
+are described here. To follow the process of using these functions
+using a working example there are four additional files: <I>ID1.docx,
+ID2.odt, transcript.txt</I> and <I>attributes.csv</I>.</P>
+<P STYLE="margin-bottom: 0cm">Text files can be imported from plain
+text, <I>docx</I> and <I>odt</I> format. Text files can be entered
+manually through PyQDA.</P>
+<P STYLE="margin-bottom: 0cm">PyQDA has not been tested on operating
+systems other than Ubuntu and non-English character sets have not
+been tested.</P>
+<P STYLE="margin-bottom: 0cm">Text can be coded and codes can be
+ordered into categories. Annotations can be added to the text. Code
+reports can be generated including SQL queries. Reports can be
+exported as plain text or html files. Codes and categories can be
+renamed, merged and deleted. Memos can be assigned to the entire
+project, codes, files, cases and attributes.</P>
+<H1 CLASS="western">Project menu</H1>
+<H2 CLASS="western">Create new project</H2>
+<P STYLE="margin-bottom: 0cm">Create a new project under the
+'Project' menu - lets call it test. 
+</P>
+<P STYLE="margin-bottom: 0cm">Again, under the 'Project' menu click
+on 'Project memo'. This is a memo about your project. Type &quot;A
+test QDA project&quot; and click the OK button. 
+</P>
+<P STYLE="margin-bottom: 0cm">Under the 'Project' menu is a
+'Settings' option. Settings allows you to change the coder name and
+the coder table. There are two coder tables which are used to compare
+one coder with another coder to be able to determine the reliability
+of the coding scheme. 
+</P>
+<H2 CLASS="western">Open project</H2>
+<P STYLE="margin-bottom: 0cm">Use this option to select and open a
+project. Opening a project automatically closes any previously opened
+project.</P>
+<H2 CLASS="western">Close project</H2>
+<P>Use this option to close a currently open project.</P>
+<H2 CLASS="western">Project memo</H2>
+<P>General notes about the current project can be entered and viewed
+here.</P>
+<H2 CLASS="western">Settings</H2>
+<P>The coder name can be entered here. There are two coding tables
+for coder 1 and coder 2. The coder 2 setting should be used once an
+initial coding of the text is completed and a second coder is
+employed to code the text and provide a measure of agreement with the
+initial coding.</P>
+<P>Font and font size are  not currently implemented.</P>
+<H1 CLASS="western">Files and cases menu</H1>
+<H2 CLASS="western">Manage files</H2>
+<P STYLE="margin-bottom: 0cm">Add some written material. In the menu
+bar select <I><SPAN STYLE="font-weight: normal">Manage files</SPAN></I><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">
+and a file management dialog is presented. </SPAN></SPAN>Import the
+documents <I>transcript.txt, ID1.docx, ID2,odt.</I></P>
+<P STYLE="margin-bottom: 0cm">There is a transcript of a discussion
+between three students names ID1, ID2 and ID3. The ID1 and ID2 files
+contain the written thoughts of two students. 
+</P>
+<P STYLE="margin-bottom: 0cm"><A NAME="__DdeLink__274_1279364544"></A>
+While in the Manage files dialog, create a new file ID3 in the <I>Manage
+files</I> dialog. Enter the following text into this file: &quot;I
+really like the history course, but I am struggling with the
+assignments. I am not a good writer as English is not my first
+language.&quot; 
+</P>
+<P STYLE="margin-bottom: 0cm">You will see a memo column. Click the
+memo square next to <I>transcript.txt</I> to open a memo. Type the
+following text into the memo: &quot;transcript from a discussion at a
+recent tutorial&quot; 
+</P>
+<P STYLE="margin-bottom: 0cm">You will notice the memo square now
+says <I>Yes</I><SPAN STYLE="font-style: normal"> indicating a memo
+exists</SPAN>. To delete any memo, open the memo, delete all text
+from it and click the OK button. 
+</P>
+<P STYLE="margin-bottom: 0cm">File names can be changed by
+double-clicking on the file name.</P>
+<P STYLE="margin-bottom: 0cm">PDF files can be imported. I am using
+the PyPdf module for this. This does not provide any formatting or
+spacing so you have been warned.</P>
+<H2 CLASS="western">Manage cases</H2>
+<P STYLE="margin-bottom: 0cm">Open the <I>Manage cases</I> dialog.
+Add the three students here by adding three cases. Call each student:
+ID1, ID2 and ID3. 
+</P>
+<P STYLE="margin-bottom: 0cm">Cases are useful for assigning
+attributes such as age and sex. You can add a memo to each case and
+rename a case by double-clicking on a case name. 
+</P>
+<P STYLE="margin-bottom: 0.1cm">Now lets add each student's file to
+each student. Click on a case, say ID1, then click the <I>Add file to
+case</I> button. Select the <I>ID1.docx</I> file. Add the other files
+to the other cases. 
+</P>
+<P STYLE="margin-bottom: 0cm">Click the <I>Open file</I> button and
+open the <I>ID1.docx</I> file. The file text is loaded into the right
+pane. Click on case ID1 in the case table. Now you can see all the
+text of this file has been assigned to ID1 as it has underlined in
+red. Notice that the other cases do not have this effect on this
+file, but they do if you open the other student files. 
+</P>
+<P STYLE="margin-bottom: 0cm">Now open the <I>transcript.txt</I>
+file. you can assign text manually by selecting a case then selecting
+text in the file and clicking the <I>Mark file text</I> button.
+However, you can also assign text by selecting a case then clicking
+the <I>Auto assign file text</I> button. 
+</P>
+<P STYLE="margin-bottom: 0cm">Notice the transcript begins with a
+student id inside []. Try automatically assigning text to ID1 by
+selecting case ID1 then clicking the <I>Auto assign file text</I>
+button. You will be asked which file or files to assign the case to.
+Select <I>transcript.txt</I><SPAN STYLE="font-style: normal"> from
+the list</SPAN>. Next you need to enter the start and end marks. The
+start mark will be '[id1]' and the end mark will be '['. Now select
+case ID1 and you will see all the text from the start mark to just
+before the end mark is assigned to case ID1. 
+</P>
+<P STYLE="margin-bottom: 0cm">Mark the other cases as well. With ID2
+you will get a warning that one end mark was not found. This can be
+fixed manually by selecting ID2 then selected the missed text and
+clicking the <I>Mark file text</I> button. 
+</P>
+<P STYLE="margin-bottom: 0cm">If you make any mistakes with any
+cases, select the case then click on the underlined text and click
+the <I>Unmark file text</I> button. 
+</P>
+<P STYLE="margin-bottom: 0cm">The <I>View case</I> button shows all
+the text in all the files that is associated with the selected case.</P>
+<H2 CLASS="western">File categories 
+</H2>
+<P STYLE="margin-bottom: 0cm">Select <I>File categories</I> from the
+menu. We have two types of files, a transcript and student thoughts.
+Create two categories for these file types: transcript, students. Now
+select the <I>transcript.txt</I> file and select the Transcript
+category. Click the <I>Link</I> button to link the file with the
+category. You can check that this file is linked to the Transcript
+category by clicking the <I>View</I> square to see those files linked
+to this category. Now link the student ID files to the Student
+category. You can highlight all three files by clicking with the
+mouse and holding down the 'ctrl' button. 
+</P>
+<P STYLE="margin-bottom: 0cm">If you make a mistake you can unlink by
+selecting the File category and the file you wish to unlink. You can
+only unlink when the category View is selected. Finally, you can
+merge File categories together, but you be warned might need to save
+a copy or your .rqda file first as there is no undo for this
+operation. You can also delete file categories, again there is no
+undo option. 
+</P>
+<H2 CLASS="western">Manage Journals 
+</H2>
+<P STYLE="margin-bottom: 0cm">Select <I>Manage journals</I>. You can
+create journals to write down your thoughts and ideas when
+investigating the text and developing themes. 
+</P>
+<H1 CLASS="western">Attributes</H1>
+<P STYLE="margin-bottom: 0cm">Attributes are variables associated
+with files or cases. They can be useful to add context to the text
+analysis.</P>
+<H2 CLASS="western">Manage Attributes</H2>
+<P STYLE="margin-bottom: 0cm">Open the <I>Manage Attributes</I>
+dialog. Add an EducationLevel attribute for the students, ensure this
+is of type character. Attributes can be character, numeric (or
+non-assigned if created in RQDA). Once you have created an
+EducationLevel attribute, you can give it a memo describing the
+attribute.</P>
+<P STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">Double-click
+on an attribute name to change the </SPAN><SPAN STYLE="font-style: normal">attribute
+</SPAN><SPAN STYLE="font-style: normal">name. Files can also be
+assigned attributes if needed. </SPAN><SPAN STYLE="font-style: normal">The
+Cases and Files columns show whether attributes are associated with
+cases, files or both.</SPAN></P>
+<H2 CLASS="western"><I>A</I><I>ssign</I><SPAN STYLE="font-style: normal">
+</SPAN><I>Attributes</I></H2>
+<P STYLE="margin-bottom: 0cm; font-style: normal">You can enter
+attribute values for each case or file by clicking on table cells and
+entering values. If non-numeric values are entered into a numeric
+field the field reverts to the original value.</P>
+<H2 CLASS="western">Import Attributes</H2>
+<P STYLE="margin-bottom: 0cm">Importing Attributes from a CSV file.
+The first row must contain the attribute headings and the very first
+heading must be either <I>file</I> or <I>case</I><SPAN STYLE="font-style: normal">,
+so that file or case entries are correctly matched. Note that this is
+case sensitive. </SPAN><SPAN STYLE="font-style: normal">Open the
+</SPAN><I>attributes.csv</I><SPAN STYLE="font-style: normal"> file to
+see how it is laid out. Import the attributes from this file through
+the </SPAN><I>Import Attributes</I><SPAN STYLE="font-style: normal">
+dialog. Once the attributes have been imported, open the </SPAN><I>Assign
+Attributes</I><SPAN STYLE="font-style: normal"> dialog to see the
+imported information.</SPAN></P>
+<H1 CLASS="western">Coding menu</H1>
+<H2 CLASS="western">Codes</H2>
+<P>This is the central dialog for assigning codes to text. Once text
+segments are coded, hovering the mouse over the coding shows the code
+name as a tooltip. Clicking on the coded segment also shows the code
+name.</P>
+<H3 CLASS="western">View File</H3>
+<P STYLE="margin-bottom: 0cm">To begin coding you need to view some
+text. Select a file to view from the list presented in this dialog.</P>
+<H3 CLASS="western">Add</H3>
+<P STYLE="margin-bottom: 0cm">Add codes using this dialog. Memos can
+be added and are used for the basis of a codebook. Codes can also be
+assigned a colour. If no colour has been selected the text is marked
+with a gray colour.</P>
+<H3 CLASS="western">Delete</H3>
+<P STYLE="margin-bottom: 0cm">A code can be deleted by selecting the
+code then pressing the <I>Delete</I> button. You will be asked to
+confirm the deletion.</P>
+<H3 CLASS="western">Annotate</H3>
+<P STYLE="margin-bottom: 0cm">Add an annotation (like a memo) to a
+point in the text. You will see a text character will become <SPAN STYLE="font-style: normal"><B>bold</B></SPAN><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">
+to mark the position of the annotation</SPAN></SPAN>.</P>
+<H3 CLASS="western">Auto Code</H3>
+<P STYLE="margin-bottom: 0cm">Select a code then click the <I>Auto
+Code</I> button. Enter the text you want to autocode. The next dialog
+asks for one or more files to autocode. All matching text will be
+assigned the selected code.</P>
+<H3 CLASS="western">Mark</H3>
+<P STYLE="margin-bottom: 0cm">Highlight some text and select a code,
+then click the <I>Mark</I> button to assign the code to the text.</P>
+<H3 CLASS="western">Unmark</H3>
+<P STYLE="margin-bottom: 0cm">To remove a code from text, click on
+the coded text then press the <I>Unmark</I> button.</P>
+<H2 CLASS="western">Categories</H2>
+<P STYLE="margin-bottom: 0cm">Codes can be collated into categories.
+Add a category using the <I>Add</I> button. Delete a category by
+highlighting then clicking <I>Delete</I>. Rename a category by
+double-clicking the category name. To assign codes to a category,
+highlight the codes with mouse, you can use the 'ctrl' or 'shift'
+buttons to select multiple codes, highlight a category and then click
+<I>Link</I>. To unlink,</P>
+<P STYLE="margin-bottom: 0cm">Click the <I>View linked</I> square to
+see the codes assigned to each category. You will see the <I>Link</I>
+button will become inactive and the <I>Unlink</I> button will become
+active. To unlink codes from the category, select any codes and click
+<I>Unlink</I>.</P>
+<P STYLE="margin-bottom: 0cm">Selected codes can be merged by
+clicking the <I>Merge Codes</I> button. The dialog will ask you to
+select the code you would like to keep. A similar function  for
+categories is available using the <I>Merge Categories</I> button. A
+word of warning, there is no undo function, it would be best to save
+a copy of the <I>rqda</I> file first.</P>
+<P STYLE="margin-bottom: 0cm">Categories and linked codes can be
+visualised using the drop-down list. Most of the options in the list
+show graphs (or maps) of connections between selected categories and
+codes. Categories are always shown in uppercase. The various options
+position the codes and categories in different ways. The last item in
+the selection list produces a table of codes linked to each selected
+category. The codes are ordered from the most frequent to the least
+frequent for each category.</P>
+<H2 CLASS="western">Codebook</H2>
+<P STYLE="margin-bottom: 0cm">A codebook is a list of your codes.
+Each code memo should detail the reasons behind assigning each code
+to the text. The codebook can be exported to a text file.</P>
+<H1 CLASS="western">Reports</H1>
+<H2 CLASS="western">Coding reports</H2>
+<P STYLE="margin-bottom: 0cm">This report gives a list of coded text.
+One or more codes need to be selected and one or both of <I>coder 1</I>
+and <I>coder 2</I> need to be selected. The <I>Search</I> button will
+present the results.</P>
+<P STYLE="margin-bottom: 0cm">If a category is selected all codes in
+that category are also selected. Multiple categories can be selected
+using the mouse and the 'ctrl' button. Codes and categories can be
+sorted to help find the codes of interest.</P>
+<P STYLE="margin-bottom: 0cm">Codings can be narrowed down by using
+the <I>Search Text</I>  function or the <I>File selection</I> button.
+Only codings within the selected files will be presented, or if this
+function was not used all files are used. If text is entered into the
+<I>Search text</I><SPAN STYLE="font-style: normal"> field</SPAN>,
+only codings which contain the matching text will be presented.</P>
+<P STYLE="margin-bottom: 0cm">Codings can also be narrowed down to
+case selections using the <I>Case selection</I> button. Note that
+when case selections are used, file selections are ignored. Also when
+file selections are used, case selections are ignored. 
+</P>
+<P STYLE="margin-bottom: 0cm">Reports can be exported to text or html
+files.</P>
+<H2 CLASS="western">SQL statements</H2>
+<P>This dialog contains three panes. The top pane is where SQL
+statements are entered and the bottom pane contains the results of
+queries.  The left pane contains tables and field names.
+Double-clicking on a field name adds it to the SQL statement. Results
+can be exported to a text file.  If you are not familiar with SQL
+take care as you will be able to update and delete the data as well
+as select data.</P>
+<P>Note: Some Unicode symbols are not converted to plain text and are
+ignored.</P>
+<P>Most fields are text.</P>
+<P> <I>id, cid, fid, </I><I>fileID</I><I>, </I><I>caseID,catid, </I><I>cid</I>
+and <I>status</I> are integer.</P>
+<P><I>selstart</I> and <I>selend</I> are real.</P>
+<H2 CLASS="western">Coding summary</H2>
+<P STYLE="margin-bottom: 0cm">A summary report of each code by code
+count, average characters and average number of words is produced.</P>
+<H1 CLASS="western">Help</H1>
+<P STYLE="margin-bottom: 0cm">Contains these instructions and
+software development details.</P>
+<H1 CLASS="western">Other issues</H1>
+<H2 CLASS="western">Unicode</H2>
+<P STYLE="margin-bottom: 0cm">I had some difficulties with Unicode.
+This software has not been well tested in this regard. Also this
+software has only been tested with English character sets, it may not
+work well with other character sets.</P>
+<H2 CLASS="western">Testing in general</H2>
+<P STYLE="margin-bottom: 0cm">This software has currently only been
+tested on Ubuntu using an Australian English character set.</P>
+<H2 CLASS="western">Database tables and fields</H2>
+<P STYLE="margin-bottom: 0cm">I did not implement functionality for
+the <I>image</I> and <I>imageCoding</I> tables. (Maybe later). I did
+not utilise the status field, although all entries are marked with a
+1. I did not utilise the dateM field. I may implement this later to
+have dates stored in ISO 8601 format: <I>YYYY-MM-DDThh:mm:ss</I></P>
+<H2 CLASS="western">Additional software</H2>
+<P STYLE="margin-bottom: 0cm">PyQt</P>
+<P STYLE="margin-bottom: 0cm">For network graphs: igraph</P>
+<P STYLE="margin-bottom: 0cm">To import PDF files: pyPdf</P>
+</BODY>
+</HTML>

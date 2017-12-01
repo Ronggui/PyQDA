@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="LibreOffice 4.1.2.3 (Linux)">
+	<META NAME="AUTHOR" CONTENT="colin-2 ">
+	<META NAME="CREATED" CONTENT="20131024;114609006180925">
+	<META NAME="CHANGEDBY" CONTENT="colin-2 ">
+	<META NAME="CHANGED" CONTENT="20131103;114318413445318">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		H1 { margin-bottom: 0.21cm }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H1.cjk { font-family: "DejaVu Sans"; font-size: 16pt }
+		H1.ctl { font-family: "Lohit Hindi"; font-size: 16pt }
+		H2 { margin-bottom: 0.21cm }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Lohit Hindi"; font-size: 14pt; font-style: italic }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+
+<H1 CLASS="western">About Py3QDA</H1>
+<H2 CLASS="western">Version:</H2>
+<P STYLE="margin-bottom: 0cm">Py3QDA 0.1 November 2017</P>
+<P STYLE="margin-bottom: 0cm">Depends on Python 3.5 and PyQt5</P>
+<P STYLE="margin-bottom: 0cm">Tested on: macOS High Sierra</P>
+<P STYLE="margin-bottom: 0cm">For Pdf importing, pyPdf needs to be
+installed.</P>
+<P STYLE="margin-bottom: 0cm">For network graph plots python-igraph
+needs to be installed.</P>
+<H2 CLASS="western">History</H2>
+<P STYLE="margin-bottom: 0cm">I developed and used RQDA (http://rqda.r-forge.r-project.org/) for qualitative analysis of
+survey responses. However, RQDA does not support Chinese input for macOS, so I decided to port PyQDA to python 3.5 using PyQt5 as a backend.</P>
+<P STYLE="margin-bottom: 0cm">Ronggui Huang</P>
+<H2 CLASS="western">Acknowledgements</H2>
+<P STYLE="margin-bottom: 0cm">Colin Curtain for reimplement RQDA, which is entitled PyQDA, using Python and PyQt4.</P>
+<P>MIT License</P>
+<P>Copyright (c) 2017 Ronggui Huang
+</P>
+<P>Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files
+(the &quot;Software&quot;), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:
+</P>
+<P>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+</P>
+<P>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY,
+</P>
+<P>FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+THE USE OR OTHER DEALINGS IN THE SOFTWARE.</P>
+
+
+<H1 CLASS="western">About PyQDA</H1>
+<H2 CLASS="western">Version:</H2>
+<P STYLE="margin-bottom: 0cm">PyQDA 0.1.1 November 2013</P>
+<P STYLE="margin-bottom: 0cm">Depends on Python 2.7 and PyQt4</P>
+<P STYLE="margin-bottom: 0cm">Tested on: Ubuntu 13.10</P>
+<P STYLE="margin-bottom: 0cm">For Pdf importing, pyPdf needs to be
+installed.</P>
+<P STYLE="margin-bottom: 0cm">For network graph plots python-igraph
+needs to be installed.</P>
+<H2 CLASS="western">Problems</H2>
+<P STYLE="margin-bottom: 0cm">I did have some problems with unicode
+conversions, so the plainer the text the better. I have not tried to
+use PyQDA with other language/character sets. I have also not tested
+the software on othe operating systems. It has been tested on Ubuntu.</P>
+<P STYLE="margin-bottom: 0cm">There is an option in the RQDA database
+for image coding but this has not been implemented yet.</P>
+<H2 CLASS="western">History</H2>
+<P STYLE="margin-bottom: 0cm">I used RQDA for qualitative analysis of
+survey responses. I really appreciate the work of Ronggui Huang and
+Zhang Gehao for developing RQDA. See
+http://rqda.r-forge.r-project.org/</P>
+<P STYLE="margin-bottom: 0cm">RQDA worked well for my purposes.
+However, during an Ubuntu upgrade the software stopped working. It
+relied on igraphfix which was not installed in the upgrade (the fix
+was to install igraphfix: sudo apt-get build-dep igraph).</P>
+<P STYLE="margin-bottom: 0cm">I thought, well this was a good
+opportunity to use and develop my Python and PyQT programming skills.
+So I decided to write this Python software to utilise the Sqlite RQDA
+database.</P>
+<P STYLE="margin-bottom: 0cm">I hope PyQDA is useful to others and
+can complement the RQDA project.</P>
+<P STYLE="margin-bottom: 0cm">Colin Curtain</P>
+<H2 CLASS="western">Acknowledgements</H2>
+<P STYLE="margin-bottom: 0cm">Ronggui Huang and Zhang Gehao for
+creating RQDA.</P>
+<P STYLE="margin-bottom: 0cm">Mike MacCana for the source code for
+the docx module.</P>
+<P>User: bit4 on stackoverflow who presented the source code to
+convert html to text.</P>
+<H2 CLASS="western">License</H2>
+<P>MIT License</P>
+<P>Copyright (c) 2013 Colin Curtain
+</P>
+<P>Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files
+(the &quot;Software&quot;), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:
+</P>
+<P>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+</P>
+<P>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY,
+</P>
+<P>FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+THE USE OR OTHER DEALINGS IN THE SOFTWARE.</P>
+</BODY>
+</HTML>
