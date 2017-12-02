@@ -556,13 +556,13 @@ class Ui_Dialog_codes(object):
                 #print item
                 cur = self.settings['conn'].cursor()
                 cur.execute("insert into " + self.settings['codertable'] + " (cid,fid,seltext,selfirst,selend,owner,memo,date,status) values(?,?,?,?,?,?,?,?,?)"
-                    ,(item['cid'], item['fid'], item['seltext'].encode('raw_unicode_escape'),
+                    ,(item['cid'], item['fid'], item['seltext'],
                     item['selfirst'], item['selend'], item['owner'], item['memo'], item['date'],
                     item['status']))
                 self.settings['conn'].commit()
 
                 # if this is the currently open file update the coding list and GUI
-                if file['id'] == self.filename['id']:
+                if "id" in self.filename and file['id'] == self.filename['id']:
                     self.coding.append(item)
             self.highlight()
 
@@ -600,14 +600,17 @@ class Ui_Dialog_codes(object):
 
     def setupUi(self, Dialog_codes, settings):
         Dialog_codes.setObjectName(_fromUtf8("Dialog_codes"))
-        w = QtWidgets.QApplication.desktop().width()
-        h = QtWidgets.QApplication.desktop().height()
+        #w = QtWidgets.QApplication.desktop().width()
+        #h = QtWidgets.QApplication.desktop().height()
+        sizeObject = QtWidgets.QDesktopWidget().screenGeometry(-1)
+        h = sizeObject.height()
+        w = sizeObject.width()
         #print ("w" + str(w)+" h"+str(h))
-        if w > 1200: w = 1200
-        if h > 800: h = 800
+        #if w > 1200: w = 1200
+        #if h > 800: h = 800
         #if h > 600: h = 600  #temporary for testing to allow me to view the console while program runs
-        Dialog_codes.resize(w, h-80)
-        Dialog_codes.move(20,20)
+        Dialog_codes.resize(w - 60, h - 200)
+        Dialog_codes.move(20, 20)
 
         self.pushButton_add = QtWidgets.QPushButton(Dialog_codes)
         self.pushButton_add.setGeometry(QtCore.QRect(10, 10, 98, 27))
@@ -737,12 +740,14 @@ class TT_EventFilter(QtCore.QObject):
             pos = cursor.position()
             receiver.setToolTip("")
             displayText = ""
-            for item in self.coding:
-                if item['selfirst'] <= pos and item['selend'] >= pos:
-                    if displayText == "":
-                        displayText = item['name']
-                    else: # can have multiple codes on same selected area
-                        displayText += "\n" + item['name']
+            if isinstance(self.coding, list):
+                # self.coding can be None if not file is open
+                for item in self.coding:
+                    if item['selfirst'] <= pos and item['selend'] >= pos:
+                        if displayText == "":
+                            displayText = item['name']
+                        else: # can have multiple codes on same selected area
+                            displayText += "\n" + item['name']
             if displayText != "":
                 receiver.setToolTip(displayText)
 
