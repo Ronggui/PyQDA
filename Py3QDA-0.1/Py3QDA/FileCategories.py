@@ -231,7 +231,7 @@ class Ui_Dialog_fcats(object):
             newid = 1
             for cat in self.cats:
                 if cat['catid'] >= newid: newid = cat['catid']+1
-            item = {'name':newCatText.encode('raw_unicode_escape'),'fid':None, 'catid':newid, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1}
+            item = {'name':newCatText,'fid':None, 'catid':newid, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1}
             self.cats.append(item)
             cur = self.settings['conn'].cursor()
             cur.execute("insert into filecat (name, fid, catid, memo, owner, date, dateM, status) values(?,?,?,?,?,?,?,?)"

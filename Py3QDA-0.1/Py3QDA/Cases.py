@@ -104,7 +104,7 @@ class Ui_Dialog_cases(object):
             newid = 1
             for fc in self.cases:
                 if fc['id'] >= newid: newid = fc['id']+1
-            item = {'name':newCaseText.encode('raw_unicode_escape'), 'memo':"", 'owner':self.settings['codername'],
+            item = {'name':newCaseText, 'memo':"", 'owner':self.settings['codername'],
                      'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1}
             self.cases.append(item)
             cur = self.settings['conn'].cursor()
@@ -159,7 +159,7 @@ class Ui_Dialog_cases(object):
         x = self.tableWidget_cases.currentRow()
         y = self.tableWidget_cases.currentColumn()
         if y == self.NAME_COLUMN:
-            newText = str(self.tableWidget_cases.item(x, y).text()).strip().encode('raw_unicode_escape')
+            newText = str(self.tableWidget_cases.item(x, y).text()).strip()
 
             # check that no other case name has this text and this is not empty
             update = True
@@ -227,7 +227,7 @@ class Ui_Dialog_cases(object):
                 self.tableWidget_cases.setItem(x, self.MEMO_COLUMN, QtWidgets.QTableWidgetItem("Yes"))
 
             # update cases list and database
-            self.cases[x]['memo'] = str(memo).encode('raw_unicode_escape')
+            self.cases[x]['memo'] = str(memo)
             cur = self.settings['conn'].cursor()
             cur.execute("update cases set memo=? where id=?", (self.cases[x]['memo'], self.cases[x]['id']))
             self.settings['conn'].commit()
@@ -316,7 +316,7 @@ class Ui_Dialog_cases(object):
         try:
             cursor.setPosition(0, QtWidgets.QTextCursor.MoveAnchor)
             cursor.setPosition(len(self.selectedFile['file']), QtWidgets.QTextCursor.KeepAnchor)
-            cursor.setCharFormat(QtWidgets.QTextCharFormat())
+            cursor.setCharFormat(QtGui.QTextCharFormat())
         except:
             pass
             #print(("unlight, text length" +str(len(self.textEd.toPlainText()))))
@@ -326,7 +326,7 @@ class Ui_Dialog_cases(object):
         Highlight text of selected case with red underlining.
         """
 
-        format_ = QtWidgets.QTextCharFormat()
+        format_ = QtGui.QTextCharFormat()
         #format_.setForeground(QtWidgets.QColor("#990000"))
         cursor = self.textEd.textCursor()
 

@@ -107,8 +107,8 @@ class Ui_Dialog_Attributes(object):
                 attrClass = "numeric"
 
             # update attribute list and database
-            item = {'name':newText.encode('raw_unicode_escape'), 'memo':"", 'owner':self.settings['codername'],
-                    'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1, 'class':attrClass}
+            item = {'name':newText, 'memo':"", 'owner':self.settings['codername'],
+                    'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1, 'class':attrClass, 'case':'', 'file':''}
             self.attributes.append(item)
             cur = self.settings['conn'].cursor()
             cur.execute("insert into attributes (name,status,date,dateM,owner,memo,class) values(?,?,?,?,?,?,?)"
@@ -176,7 +176,7 @@ class Ui_Dialog_Attributes(object):
                 self.tableWidget.setItem(x, self.MEMO_COLUMN, QtWidgets.QTableWidgetItem("Yes"))
 
             # update attributes list and database
-            self.attributes[x]['memo'] = str(memo).encode('raw_unicode_escape')
+            self.attributes[x]['memo'] = str(memo)
             cur = self.settings['conn'].cursor()
             cur.execute("update attributes set memo=? where name=?", (self.attributes[x]['memo'], self.attributes[x]['name']))
             self.settings['conn'].commit()
@@ -187,7 +187,7 @@ class Ui_Dialog_Attributes(object):
         x = self.tableWidget.currentRow()
         y = self.tableWidget.currentColumn()
         if y == NAME_COLUMN:
-            newText = str(self.tableWidget.item(x, y).text()).strip().encode('raw_unicode_escape')
+            newText = str(self.tableWidget.item(x, y).text()).strip()
 
             # check that no other attribute has this text and this is is not empty
             update = True

@@ -89,8 +89,8 @@ class Ui_Dialog_autoassign(object):
         self.label_case.setObjectName(_fromUtf8("label_case"))
 
         self.retranslateUi(Dialog_autoassign)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), Dialog_autoassign.accept)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), Dialog_autoassign.reject)
+        self.buttonBox.accepted.connect(Dialog_autoassign.accept)
+        self.buttonBox.rejected.connect(Dialog_autoassign.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog_autoassign)
 
     def retranslateUi(self, Dialog_autoassign):

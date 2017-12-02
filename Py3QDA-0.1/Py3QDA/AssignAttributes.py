@@ -139,7 +139,7 @@ class Ui_Dialog_assignAttributes(object):
         y = self.tableWidget.currentColumn()
         if y <= self.ID_COLUMN: return
 
-        newText = str(self.tableWidget.item(x, y).text()).strip().encode('raw_unicode_escape')
+        newText = str(self.tableWidget.item(x, y).text()).strip()
         #print(self.casesOrFiles[x]['name'], self.casesOrFiles[x]['id'], self.attributes[y-2]['name'], newText) #temp
 
         # check that numeric column value is actually numeric
