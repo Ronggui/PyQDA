@@ -105,7 +105,7 @@ class Ui_Dialog_manageFiles(object):
         x = self.tableWidget_files.currentRow()
         y = self.tableWidget_files.currentColumn()
         if y == self.NAME_COLUMN:
-            newText = str(self.tableWidget_files.item(x, y).text()).strip().encode('raw_unicode_escape')
+            newText = str(self.tableWidget_files.item(x, y).text()).strip()
 
             # check that no other source file has this text and this is is not empty
             update = True
@@ -198,7 +198,7 @@ class Ui_Dialog_manageFiles(object):
         Can import from plain text files, also import from html, odt and docx
         Note importing from html, odt and docx all formatting is lost """
 
-        importFile = str(QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', ""))
+        importFile = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', "")[0]
         nameSplit = importFile.split("/")
         fileName = nameSplit[-1]
         plainText = ""
@@ -315,7 +315,9 @@ class Ui_Dialog_manageFiles(object):
                 else:
                     newText += "?"
 
-        plainText = unicode(newText)
+        #plainText = unicode(newText)
+        plainText = newText
+        print(newText)
         newFile['file'] = plainText
         cur = self.settings['conn'].cursor()
         cur.execute("insert into source(name,id,file,memo,owner,date,dateM,status) values(?,?,?,?,?,?,?,?)",

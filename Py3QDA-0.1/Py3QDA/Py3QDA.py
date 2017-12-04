@@ -29,7 +29,25 @@ https://github.com/ccbogel/PyQDA
 """
 Main loop and main view.
 """
-
+## for pyinstaller to find required packages
+import logging
+try:
+    from lxml import etree
+except:
+    from xml import etree
+# note lxml is not installed on all OS, may then try xml module instead
+try:
+    from PIL import Image
+except ImportError:
+    import Image
+import zipfile
+import shutil
+import re
+import time
+import os
+from os.path import join
+import re
+##
 import sys
 import datetime
 import sqlite3
