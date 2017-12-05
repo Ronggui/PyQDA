@@ -110,12 +110,12 @@ class Ui_Dialog_reportCodings(object):
     def exportTextFile(self):
         """ Export file to a plain text file, filename will have .txt ending """
 
-        fileName = QtWidgets.QFileDialog.getSaveFileName(None,"Save text file", os.getenv('HOME'))
+        fileName = QtWidgets.QFileDialog.getSaveFileName(None,"Save text file", os.getenv('HOME'))[0]
         if fileName:
             fileName += ".txt"
             #print (("Exporting:  to " + fileName))
-            filedata = self.plainTextResults.encode('utf-8')
-            f = open(fileName, 'w')
+            filedata = self.plainTextResults
+            f = open(fileName, 'w', encoding="utf8")
             f.write(filedata)
             f.close()
             self.log += "Search Results exported to " + fileName + "\n"
@@ -124,7 +124,7 @@ class Ui_Dialog_reportCodings(object):
     def exportHtmlFile(self):
         """ Export file to html file """
 
-        fileName = QtWidgets.QFileDialog.getSaveFileName(None,"Save html file", os.getenv('HOME'))
+        fileName = QtWidgets.QFileDialog.getSaveFileName(None,"Save html file", os.getenv('HOME'))[0]
         if fileName:
             fileName += ".html"
             #print (("Exporting:  to " + fileName))

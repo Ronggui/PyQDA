@@ -352,8 +352,8 @@ class Ui_Dialog_manageFiles(object):
             fileName = directory + "/" + fileName
             print (("Exporting:  to " + fileName))
             filedata = self.sourcetext[x]['file']
-            filedata = filedata.encode('utf-8')
-            f = open(fileName, 'w')
+            #filedata = filedata.encode('utf-8')
+            f = open(fileName, 'w', encoding='utf8')
             f.write(filedata)
             f.close()
 

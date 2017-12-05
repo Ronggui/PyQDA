@@ -315,7 +315,7 @@ class MainView(QtWidgets.QMainWindow):
             return
         impAttr = ImportAttributes(self.settings)
         if impAttr.getLog() != "":
-            self.logWidget.textEdit.append(ImportAttributes.getLog())
+            self.logWidget.textEdit.append(impAttr.getLog())
 
     def manageCases(self):
         """ Create, edit, delete, rename cases, add cases to files or parts of

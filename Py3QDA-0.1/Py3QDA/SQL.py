@@ -60,12 +60,12 @@ class Ui_Dialog_sql(object):
     def exportFile(self):
         """ Export textedit results to a plain text file, filename will have .txt ending """
 
-        fileName = QtWidgets.QFileDialog.getSaveFileName(None,"Save text file", os.getenv('HOME'))
+        fileName = QtWidgets.QFileDialog.getSaveFileName(None,"Save text file", os.getenv('HOME'))[0]
         if fileName:
             fileName += ".txt"
             #print (("Exporting:  to " + fileName))
             filedata = self.textEdit_results.toPlainText()
-            f = open(fileName, 'w')
+            f = open(fileName, 'w', encoding="utf-8")
             f.write(filedata)
             f.close()
             self.log += "Search Results exported to " + fileName + "\n"

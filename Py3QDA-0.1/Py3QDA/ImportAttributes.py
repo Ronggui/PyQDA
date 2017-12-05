@@ -61,21 +61,21 @@ class ImportAttributes():
             self.storedAttributes.append({'name':row[0], 'status':row[1], 'date':row[2],
             'dateM':row[3], 'owner':row[4], 'memo':row[5], 'class':row[6]})
 
-        fileName = str(QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', ""))
+        fileName = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', "")[0]
         #if fileName == "":
         #return
         if fileName[-4:] != ".csv":
             QtWidgets.QMessageBox.warning(None, "Warning",
                  str(fileName) + "\nis not a CSV file.\nFile not imported", QtWidgets.QMessageBox.Ok)
             return
-        with open(fileName, 'rb') as f:
+        with open(fileName, 'r', encoding="utf8", errors="replace") as f:
             '''can change the dialect from csv.excel to others
             csv.register_dialect('MyDialect', delimiter='\t',doublequote=False,quotechar='',
                 lineterminator='\n',escapechar='',quoting=csv.QUOTE_MIMIMAL)
             there's also an excel-tab dialect see http://pymotw.com/2/csv/
             '''
-            #reader = csv.reader(f)
-            reader = self.unicode_csv_reader(f, csv.excel)
+            reader = csv.reader(f)
+            #reader = self.unicode_csv_reader(f, csv.excel)
             try:
                 for row in reader:
                     self.values.append(row)
@@ -126,7 +126,7 @@ class ImportAttributes():
 
             if isStoredAtt == False and col > 0:
                 # add the attribute
-                item = {'name':att.encode('raw_unicode_escape'), 'memo':"", 'owner':self.settings['codername'],
+                item = {'name':att, 'memo':"", 'owner':self.settings['codername'],
                 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"),
                 'dateM':"", 'status':1, 'class':self.attributesType[col]}
                 cur = self.settings['conn'].cursor()
@@ -174,6 +174,7 @@ class ImportAttributes():
     http://docs.python.org/2/library/csv.html#csv-examples
     to be able to import unicode formatted csv files """
 
+    """
     def unicode_csv_reader(self, unicode_csv_data, dialect, **kwargs):
             # csv.py doesn't do Unicode; encode temporarily as UTF-8:
             csv_reader = csv.reader(self.utf_8_encoder(unicode_csv_data),
@@ -185,3 +186,4 @@ class ImportAttributes():
     def utf_8_encoder(self, unicode_csv_data):
             for line in unicode_csv_data:
                 yield line.encode('utf-8')
+    """
