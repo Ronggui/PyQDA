@@ -199,6 +199,7 @@ class Ui_Dialog_manageFiles(object):
         Note importing from html, odt and docx all formatting is lost """
 
         importFile = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', "")[0]
+
         nameSplit = importFile.split("/")
         fileName = nameSplit[-1]
         plainText = ""
@@ -239,9 +240,10 @@ class Ui_Dialog_manageFiles(object):
             # Make unicode version
             newparatextlist = []
             for paratext in paratextlist:
-                newparatextlist.append(paratext.encode("utf-8"))
+                #newparatextlist.append(paratext.encode("utf-8"))
+                newparatextlist.append(paratext)
             plainText = '\n\n'.join(newparatextlist)  # Add two newlines under each paragraph
-            plainText = plainText.decode('utf-8', 'replace')
+            #plainText = plainText.decode('utf-8', 'replace')
 
         # import from html
         if importFile[-5:].lower() == ".html" or importFile[-4:].lower() == ".htm":
@@ -264,7 +266,10 @@ class Ui_Dialog_manageFiles(object):
         if plainText == "":
             importErrors = 0
             try:
-                with open(importFile, "r") as sourcefile:
+                with open(importFile, "r", errors="replace") as sourcefile:
+                    lines = sourcefile.readlines()
+                    plainText = "".join(lines)
+                    """
                     while 1:
                         line = sourcefile.readline()
                         if not line:
@@ -276,6 +281,7 @@ class Ui_Dialog_manageFiles(object):
                             importErrors += 1
                     if plainText[0:6] == "\ufeff":  # associated with notepad files
                         plainText = plainText[6:]
+                    """
             except:
                 QtWidgets.QMessageBox.warning(None, 'Warning', "Cannot import " + str(importFile), QtWidgets.QMessageBox.Ok)
                 return
@@ -317,7 +323,6 @@ class Ui_Dialog_manageFiles(object):
 
         #plainText = unicode(newText)
         plainText = newText
-        print(newText)
         newFile['file'] = plainText
         cur = self.settings['conn'].cursor()
         cur.execute("insert into source(name,id,file,memo,owner,date,dateM,status) values(?,?,?,?,?,?,?,?)",

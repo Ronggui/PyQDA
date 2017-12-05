@@ -606,8 +606,10 @@ class Ui_Dialog_codes(object):
         h = sizeObject.height()
         w = sizeObject.width()
         #print ("w" + str(w)+" h"+str(h))
-        if w > 1200: w = 1200
-        if h > 800: h = 800
+        w = min([w * 0.8, 1200])
+        h =min([h*0.8, 800])
+        #if w > 1200: w = 1200
+        #if h > 800: h = 800
         #if h > 600: h = 600  #temporary for testing to allow me to view the console while program runs
         Dialog_codes.resize(w, h - 80)
         Dialog_codes.move(20, 20)
