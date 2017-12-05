@@ -46,7 +46,7 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
         super(QtWidgets.QDialog, self).__init__(parent)  # use this to overrride accept method
 
     def accept(self):
-        self.settings['codername'] = str(self.lineEdit_coderName.text()).encode('raw_unicode_escape')
+        self.settings['codername'] = str(self.lineEdit_coderName.text())
         '''self.settings['font'] = str(self.fontComboBox.currentText()).encode('raw_unicode_escape')
         self.settings['size'] = self.spinBox.value()
         '''
@@ -116,20 +116,20 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
             self.checkBox.setChecked(False)
         #END ADDIN
 
-        #self.retranslateUi(Dialog_settings)
+        self.retranslateUi(Dialog_settings)
         self.buttonBox.accepted.connect(self.accept) #changed
         self.buttonBox.rejected.connect(Dialog_settings.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog_settings)
 
-"""
+
     def retranslateUi(self, Dialog_settings):
-        Dialog_settings.setWindowTitle(QtWidgets.QApplication.translate("Dialog_settings", "Settings", None, QtWidgets.QApplication.UnicodeUTF8))
-        self.label_coderName.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder Name", None, QtWidgets.QApplication.UnicodeUTF8))
-        self.radioButton_coder1.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder 1", None, QtWidgets.QApplication.UnicodeUTF8))
-        self.radioButton_coder2.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder 2", None, QtWidgets.QApplication.UnicodeUTF8))
-        #self.label.setText(QtWidgets.QApplication.translate("Dialog_settings", "File Font", None, QtWidgets.QApplication.UnicodeUTF8))
+        Dialog_settings.setWindowTitle(QtWidgets.QApplication.translate("Dialog_settings", "Settings", None, 1))
+        self.label_coderName.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder Name", None, 1))
+        self.radioButton_coder1.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder 1", None, 1))
+        self.radioButton_coder2.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder 2", None, 1))
+        #self.label.setText(QtWidgets.QApplication.translate("Dialog_settings", "File Font", None, QtWidgets.1))
         self.checkBox.setText(QtWidgets.QApplication.translate("Dialog_settings", "Show IDs", None))
-"""
+
 
 if __name__ == "__main__":
     import sys

@@ -59,7 +59,6 @@ class Ui_Dialog_memo(QtWidgets.QDialog):
 
     def accepted(self):
         """ Accepted button overridden method """
-
         self.memo = self.plainTextEdit.toPlainText() # str
         #self.memo = str(self.memo.toUtf8()).decode('utf-8') ## unicode
         self.Dialog_memo.accept()
@@ -119,7 +118,7 @@ class Ui_Dialog_memo(QtWidgets.QDialog):
         if title[:11] == "View file: ":
             self.label_filename.setVisible(True)
             self.label_filename.setGeometry(QtCore.QRect(10, 450, 400, 40))
-            self.gridLayout.addWidget(self.label_filename, 2, 0)
+            self.gridLayout.addWidget(self.label_filename, 3, 0)
             self.label_filename.setText("Warning: If codes or cases have been assigned to this file\nchanging the content will affect code and case positions")
 
         self.retranslateUi(Dialog_memo)
@@ -128,7 +127,7 @@ class Ui_Dialog_memo(QtWidgets.QDialog):
         QtCore.QMetaObject.connectSlotsByName(Dialog_memo)
 
     def retranslateUi(self, Dialog_memo):
-        Dialog_memo.setWindowTitle(QtWidgets.QApplication.translate("Dialog_memo", self.title, None, -1))
+        Dialog_memo.setWindowTitle(QtWidgets.QApplication.translate("Dialog_memo", self.title, None, 1))
 
 
 if __name__ == "__main__":

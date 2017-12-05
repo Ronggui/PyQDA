@@ -143,7 +143,7 @@ class Ui_Dialog_manageFiles(object):
             cur.execute("update source set file=? where id=?", (self.sourcetext[x]['file'], self.sourcetext[x]['id']))
             self.settings['conn'].commit()
         else:
-            print("No change.")
+            pass
 
     def createFile(self):
         """ Create a new text file by entering text into the dialog """

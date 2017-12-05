@@ -66,7 +66,7 @@ class Ui_Dialog_memo(QtGui.QDialog):
 
         #return self.memo.encode('utf-8','replace')
         return self.memo ## unicode
-    
+
     def getFilename(self):
         """ Get the filename for the manually entered new file """
 
@@ -136,4 +136,3 @@ if __name__ == "__main__":
     ui.setupUi(Dialog_memo)
     Dialog_memo.show()
     sys.exit(app.exec_())
-
