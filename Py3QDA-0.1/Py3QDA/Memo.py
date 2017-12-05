@@ -119,7 +119,7 @@ class Ui_Dialog_memo(QtWidgets.QDialog):
             self.label_filename.setVisible(True)
             self.label_filename.setGeometry(QtCore.QRect(10, 450, 400, 40))
             self.gridLayout.addWidget(self.label_filename, 3, 0)
-            self.label_filename.setText("Warning: If codes or cases have been assigned to this file\nchanging the content will affect code and case positions")
+            self.label_filename.setText("<font color='red'>Warning: If codes or cases have been assigned to this file changing the content will affect code and case positions</font>")
 
         self.retranslateUi(Dialog_memo)
         self.buttonBox.accepted.connect(self.accepted)

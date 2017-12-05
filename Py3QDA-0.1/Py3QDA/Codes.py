@@ -531,6 +531,19 @@ class Ui_Dialog_codes(object):
         if findText == "" or findText is None:
             return
 
+        dialog_context = QtWidgets.QInputDialog(None)
+        dialog_context.setWindowTitle("Autocode context")
+        dialog_context.setInputMode( QtWidgets.QInputDialog.IntInput)
+        dialog_context.setIntValue(50)
+        dialog_context.setIntMinimum(0)
+        dialog_context.setIntMaximum(200)
+        dialog_context.setLabelText("How many nearby words words are included?")
+        dialog_context.resize(200, 20)
+        ok = dialog_context.exec_()
+        if not ok:
+            return
+        context = dialog_context.intValue()
+
         Dialog_selectfile = QtWidgets.QDialog()
         ui = Ui_Dialog_selectfile(self.filenames)
         ui.setupUi(Dialog_selectfile,"Select file to view", "many")  # many has no meaning but is not 'single'
@@ -550,8 +563,15 @@ class Ui_Dialog_codes(object):
 
             #add new items to database
             for startPos in textStarts:
-                item = {'cid':int(self.freecode[row]['id']), 'fid':int(file['id']), 'seltext':str(findText), 'selfirst':startPos,
-                         'selend':startPos + len(findText), 'owner':self.settings['codername'], 'memo':"",
+                startPos = startPos - context
+                endPos = startPos + len(findText) + context*2
+                if startPos < 0:
+                    startPos = 0
+                if endPos > len(text):
+                    endPos = len(text)
+                seltext = text[startPos:endPos]
+                item = {'cid':int(self.freecode[row]['id']), 'fid':int(file['id']), 'seltext':seltext, 'selfirst':startPos,
+                         'selend':endPos, 'owner':self.settings['codername'], 'memo':"",
                           'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'status':1}
                 #print item
                 cur = self.settings['conn'].cursor()

@@ -387,7 +387,6 @@ class Ui_Dialog_manageFiles(object):
                     self.sourcetext.remove(item)
             self.tableWidget_files.removeRow(x)
 
-
     def fillTableWidget_files(self):
         """ Fill the table widget with file details """
 
@@ -432,16 +431,16 @@ class Ui_Dialog_manageFiles(object):
         self.pushButton_create = QtWidgets.QPushButton(Dialog_manageFile)
         self.pushButton_create.setGeometry(QtCore.QRect(100, 10, 81, 27))
         self.pushButton_create.setObjectName(_fromUtf8("pushButton_create"))
+        self.pushButton_import = QtWidgets.QPushButton(Dialog_manageFile)
+        self.pushButton_import.setGeometry(QtCore.QRect(190, 10, 81, 27))
+        self.pushButton_import.setObjectName(_fromUtf8("pushButton_import"))
         self.pushButton_export = QtWidgets.QPushButton(Dialog_manageFile)
         self.pushButton_export.setGeometry(QtCore.QRect(280, 10, 81, 27))
         self.pushButton_export.setObjectName(_fromUtf8("pushButton_export"))
         self.pushButton_export.setToolTip("Export to a text file")
         self.pushButton_delete = QtWidgets.QPushButton(Dialog_manageFile)
-        self.pushButton_delete.setGeometry(QtCore.QRect(417, 10, 81, 27))
+        self.pushButton_delete.setGeometry(QtCore.QRect(370, 10, 81, 27))
         self.pushButton_delete.setObjectName(_fromUtf8("pushButton_delete"))
-        self.pushButton_import = QtWidgets.QPushButton(Dialog_manageFile)
-        self.pushButton_import.setGeometry(QtCore.QRect(190, 10, 81, 27))
-        self.pushButton_import.setObjectName(_fromUtf8("pushButton_import"))
 
         self.retranslateUi(Dialog_manageFile)
         QtCore.QMetaObject.connectSlotsByName(Dialog_manageFile)
