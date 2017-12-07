@@ -399,7 +399,7 @@ class Ui_Dialog_cats(object):
             for cat in self.cats:
                 if cat['catid'] >= newid:
                     newid = cat['catid']+1
-            item = {'name':newCatText.encode('raw_unicode_escape'),'cid':None, 'catid':newid, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1}
+            item = {'name':newCatText,'cid':None, 'catid':newid, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1}
             self.cats.append(item)
             cur = self.settings['conn'].cursor()
             cur.execute("insert into codecat (name, cid, catid, memo, owner, date, dateM, status) values(?,?,?,?,?,?,?,?)"

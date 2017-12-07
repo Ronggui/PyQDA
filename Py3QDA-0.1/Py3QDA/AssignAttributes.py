@@ -27,6 +27,8 @@ https://github.com/ccbogel/PyQDA
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import datetime # ADDIN
+import os
+import csv
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -118,6 +120,17 @@ class Ui_Dialog_assignAttributes(object):
             self.tableWidget.removeRow(0)
         self.loadValues()
         self.fillTableWidget()
+
+    def get_table(self):
+        nrow = self.tableWidget.rowCount()
+        ncol = self.tableWidget.columnCount()
+        data= []
+        header = [self.tableWidget.horizontalHeaderItem(i).text() for i in range(ncol)]
+        data.append(header)
+        for i in range(nrow):
+            rowdata = [self.tableWidget.item(i, j).text() if self.tableWidget.item(i, j) is not None else '' for j in range(ncol)]
+            data.append(rowdata)
+        return data
 
     def selectCases(self):
         """ if cases button selected, change attrType, load case attributes and update table widget """
@@ -216,6 +229,17 @@ class Ui_Dialog_assignAttributes(object):
 
     #END ADDIN
 
+    def exportTextAttributes(self):
+        fileName = QtWidgets.QFileDialog.getSaveFileName(None,"Save text file", os.getenv('HOME'))[0]
+        if fileName:
+            fileName += ".csv"
+            filedata = self.get_table()
+            f = open(fileName, 'w', encoding="utf8")
+            w = csv.writer(f)
+            w.writerows(filedata)
+            f.close()
+            QtWidgets.QMessageBox.information(None, "Attributes File Export", str(fileName) + " exported")
+
     def setupUi(self, Dialog_assignAttributes):
         Dialog_assignAttributes.setObjectName(_fromUtf8("Dialog_assignAttributes"))
         Dialog_assignAttributes.resize(854, 485)
@@ -233,6 +257,10 @@ class Ui_Dialog_assignAttributes(object):
         self.label = QtWidgets.QLabel(Dialog_assignAttributes)
         self.label.setGeometry(QtCore.QRect(20, 20, 161, 17))
         self.label.setObjectName(_fromUtf8("label"))
+        self.pushButton_exportattr = QtWidgets.QPushButton(Dialog_assignAttributes)
+        self.pushButton_exportattr.setGeometry(QtCore.QRect(380, 19, 121, 20))
+        self.pushButton_exportattr.setObjectName(_fromUtf8("pushButton_exportattr"))
+        self.pushButton_exportattr.setStyleSheet('QPushButton {color: black}')
         self.tableWidget = QtWidgets.QTableWidget(Dialog_assignAttributes)
         self.tableWidget.setGeometry(QtCore.QRect(10, 50, 831, 421))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
@@ -244,6 +272,7 @@ class Ui_Dialog_assignAttributes(object):
         self.radioButton.clicked.connect(self.selectCases)
         self.radioButton_2.clicked.connect(self.selectFiles)
         self.tableWidget.cellChanged.connect(self.cellModified)
+        self.pushButton_exportattr.clicked.connect(self.exportTextAttributes)
         #END ADDIN
 
         self.retranslateUi(Dialog_assignAttributes)
@@ -254,6 +283,7 @@ class Ui_Dialog_assignAttributes(object):
         self.radioButton.setText(_translate("Dialog_assignAttributes", "Cases", None))
         self.radioButton_2.setText(_translate("Dialog_assignAttributes", "Files", None))
         self.label.setText(_translate("Dialog_assignAttributes", "Assign attributes to:", None))
+        self.pushButton_exportattr.setText(QtWidgets.QApplication.translate("pushButton_exportattr", "Export attributes", None, 1))
 
 
 if __name__ == "__main__":

@@ -53,6 +53,7 @@ import datetime
 import sqlite3
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
+from PyQt5 import QtGui
 from Codes import Ui_Dialog_codes
 from Categories import Ui_Dialog_cats
 from FileCategories import Ui_Dialog_fcats

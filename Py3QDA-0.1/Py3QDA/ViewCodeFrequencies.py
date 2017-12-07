@@ -81,7 +81,7 @@ class Ui_Dialog_vcf(object):
         self.tableWidget.resizeRowsToContents()
 
         self.retranslateUi(Dialog_vcf)
-        #QtCore.QMetaObject.connectSlotsByName(Dialog_vcf)
+        QtCore.QMetaObject.connectSlotsByName(Dialog_vcf)
 
     def retranslateUi(self, Dialog_vcf):
         Dialog_vcf.setWindowTitle(_translate("Dialog_vcf", "Code Frequencies", None))
