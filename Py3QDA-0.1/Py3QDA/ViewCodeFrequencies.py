@@ -91,7 +91,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Dialog_vcf = QtWidgets.QDialog()
-    ui = Ui_Dialog_vcf({"code":['10']})
+    ui = Ui_Dialog_vcf({"code":['10', '20']})
     ui.setupUi(Dialog_vcf)
     Dialog_vcf.show()
     sys.exit(app.exec_())

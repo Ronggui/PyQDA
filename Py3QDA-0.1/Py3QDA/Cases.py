@@ -34,6 +34,7 @@ from ConfirmDelete import Ui_Dialog_confirmDelete
 from Memo import Ui_Dialog_memo
 from SelectFile import Ui_Dialog_selectfile
 from AutoAssignCase import Ui_Dialog_autoassign
+from ViewCodeFrequencies import Ui_Dialog_vcf
 #END ADDIN
 
 try:
@@ -374,6 +375,36 @@ class Ui_Dialog_cases(object):
             str(int(c['selfirst'])) + ":" + str(int(c['selend'])) + "</b>")
             self.textEd.appendPlainText(c['text'])
 
+    def profileMat(self):
+        """get profile matrix and show in a QTableWidget"""
+        selectedRows = [e.row() for e in self.tableWidget_cases.selectedIndexes()]
+        selectedCases = [self.cases[i]['name'] for i in selectedRows]
+        if len(selectedRows) == 0:
+            return
+        cur = self.settings['conn'].cursor()
+        cur.execute("select name, id, cid from freecode, coding where coding.cid=freecode.id and freecode.status=1 group by cid order by name")
+        result = cur.fetchall()
+        codes = []
+        codeIds = []
+        for code in result:
+            codes.append(code[0])
+            codeIds.append(code[1])
+        Mat = {}
+        for code in codes:
+            val = []
+            for case in selectedCases:
+                cur.execute("select count(coding.fid) as n from coding, freecode where coding.cid=freecode.id and freecode.name='%s' and coding.fid in \
+                    (select fid from caselinkage, cases where caselinkage.caseid=cases.id and cases.name='%s')" % (code, case))
+                result = cur.fetchall()
+                for n in result:
+                    val.append(str(n[0]))
+            Mat[code] = val
+        Mat['Case'] = selectedCases
+        Dialog_vcf = QtWidgets.QDialog()
+        ui = Ui_Dialog_vcf(Mat)
+        ui.setupUi(Dialog_vcf)
+        Dialog_vcf.exec_()
+
     def mark(self):
         """ Mark selected text in file with currently selected case """
 
@@ -527,6 +558,10 @@ class Ui_Dialog_cases(object):
         self.pushButton_view = QtWidgets.QPushButton(Dialog_cases)
         self.pushButton_view.setGeometry(QtCore.QRect(10, 50, 98, 27))
         self.pushButton_view.setObjectName(_fromUtf8("pushButton_view"))
+        self.pushButton_profile = QtWidgets.QPushButton(Dialog_cases)
+        self.pushButton_profile.setGeometry(QtCore.QRect(110, 50, 131, 27))
+        self.pushButton_profile.setObjectName(_fromUtf8("pushButton_profile"))
+        self.pushButton_profile.setToolTip("Profile matrix of the selected cases")
         self.pushButton_openfile = QtWidgets.QPushButton(Dialog_cases)
         self.pushButton_openfile.setGeometry(QtCore.QRect(380, 10, 98, 27))
         self.pushButton_openfile.setObjectName(_fromUtf8("pushButton_openfile"))
@@ -586,6 +621,7 @@ class Ui_Dialog_cases(object):
         self.pushButton_unmark.clicked.connect(self.unmark)
         self.pushButton_autoassign.clicked.connect(self.automark)
         self.pushButton_view.clicked.connect(self.view)
+        self.pushButton_profile.clicked.connect(self.profileMat)
 
         # END ADDIN
 
@@ -603,8 +639,7 @@ class Ui_Dialog_cases(object):
         self.pushButton_autoassign.setText(_translate("Dialog_cases", "Auto assign file text", None))
         self.pushButton_unmark.setText(_translate("Dialog_cases", "Unmark file text", None))
         self.pushButton_mark.setText(_translate("Dialog_cases", "Mark file text", None))
-        #self.pushButton_attributes.setText(_translate("Dialog_cases", "Attributes", None))
-
+        self.pushButton_profile.setText(_translate("Dialog_cases", "Profile matrix", None))
 
 if __name__ == "__main__":
     import sys
