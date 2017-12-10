@@ -79,6 +79,7 @@ class Ui_Dialog_vcf(object):
 
         self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
+        self.tableWidget.setSortingEnabled(True)
 
         self.retranslateUi(Dialog_vcf)
         QtCore.QMetaObject.connectSlotsByName(Dialog_vcf)

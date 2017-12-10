@@ -381,6 +381,7 @@ class Ui_Dialog_cases(object):
         selectedCases = [self.cases[i]['name'] for i in selectedRows]
         if len(selectedRows) == 0:
             return
+        selectedCases = list(set(selectedCases)) # when case memo are selected, duplicated case names are included
         cur = self.settings['conn'].cursor()
         cur.execute("select name, id, cid from freecode, coding where coding.cid=freecode.id and freecode.status=1 group by cid order by name")
         result = cur.fetchall()
@@ -390,19 +391,20 @@ class Ui_Dialog_cases(object):
             codes.append(code[0])
             codeIds.append(code[1])
         Mat = {}
-        for code in codes:
+        for case in selectedCases:
             val = []
-            for case in selectedCases:
-                cur.execute("select count(coding.fid) as n from coding, freecode where coding.cid=freecode.id and freecode.name='%s' and coding.fid in \
-                    (select fid from caselinkage, cases where caselinkage.caseid=cases.id and cases.name='%s')" % (code, case))
+            for code in codes:
+                cur.execute("select count(coding.fid) as n from coding, freecode where coding.cid=freecode.id and freecode.name=? and coding.fid in \
+                    (select fid from caselinkage, cases where caselinkage.caseid=cases.id and cases.name=?)", (code, case))
                 result = cur.fetchall()
                 for n in result:
                     val.append(str(n[0]))
-            Mat[code] = val
-        Mat['Case'] = selectedCases
+            Mat[case] = val
         Dialog_vcf = QtWidgets.QDialog()
         ui = Ui_Dialog_vcf(Mat)
         ui.setupUi(Dialog_vcf)
+        ui.tableWidget.setVerticalHeaderLabels(codes)
+        # hack to display code names
         Dialog_vcf.exec_()
 
     def mark(self):
@@ -583,12 +585,13 @@ class Ui_Dialog_cases(object):
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         #ENDADDIN
-
+        
         self.tableWidget_cases = QtWidgets.QTableWidget(self.splitter)
         self.tableWidget_cases.setGeometry(QtCore.QRect(10, 90, 461, h - 200))
         self.tableWidget_cases.setObjectName(_fromUtf8("tableWidget_cases"))
         self.tableWidget_cases.setColumnCount(0)
         self.tableWidget_cases.setRowCount(0)
+        self.tableWidget_cases.setSortingEnabled(True)
         #self.pushButton_attributes = QtWidgets.QPushButton(Dialog_cases)
         #self.pushButton_attributes.setGeometry(QtCore.QRect(110, 50, 131, 27))
         #self.pushButton_attributes.setObjectName(_fromUtf8("pushButton_attributes"))

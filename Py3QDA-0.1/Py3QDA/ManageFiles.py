@@ -425,6 +425,7 @@ class Ui_Dialog_manageFiles(object):
         self.tableWidget_files.setObjectName(_fromUtf8("tableWidget_files"))
         self.tableWidget_files.setColumnCount(0)
         self.tableWidget_files.setRowCount(0)
+        self.tableWidget_files.setSortingEnabled(True)
         self.pushButton_view = QtWidgets.QPushButton(Dialog_manageFile)
         self.pushButton_view.setGeometry(QtCore.QRect(10, 10, 81, 27))
         self.pushButton_view.setObjectName(_fromUtf8("pushButton_view"))

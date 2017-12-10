@@ -672,6 +672,7 @@ class Ui_Dialog_codes(object):
         self.tableWidget_codes.setColumnCount(0)
         self.tableWidget_codes.setRowCount(0)
         self.tableWidget_codes.setSelectionMode( QtWidgets.QAbstractItemView.SingleSelection )
+        self.tableWidget_codes.setSortingEnabled(True)
 
         #ADDIN
         self.fillTableWidget_codes()
