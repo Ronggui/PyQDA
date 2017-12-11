@@ -70,7 +70,7 @@ from Information import Ui_Dialog_information
 from ReportCodings import Ui_Dialog_reportCodings
 from SQL import Ui_Dialog_sql
 from CodingSummary import CodingSummary
-
+from ViewCodeFrequencies import Ui_Dialog_vcf
 
 class MainView(QtWidgets.QMainWindow):
     """
@@ -206,10 +206,16 @@ class MainView(QtWidgets.QMainWindow):
         repSqlAction.triggered.connect(self.repSql)
         repSqlAction.setStatusTip('SQL statements')
 
+        repProfileMatrixAction = QtWidgets.QAction('Case profile', self)
+        repProfileMatrixAction.triggered.connect(self.repProfileMatrix)
+        repProfileMatrixAction.setStatusTip('Case profile matrix')
+
         reportsMenu = menubar.addMenu('Reports')
         reportsMenu.addAction(repCodeAction)
         reportsMenu.addAction(repSummaryAction)
+        reportsMenu.addAction(repProfileMatrixAction)
         reportsMenu.addAction(repSqlAction)
+
 
         # help menu
         helpAction = QtWidgets.QAction('Help', self)
@@ -254,6 +260,38 @@ class MainView(QtWidgets.QMainWindow):
         if ui.getLog() != "":
             self.logWidget.textEdit.append(ui.getLog())
         self.statusBar().showMessage("Ready")
+
+    def repProfileMatrix(self):
+        if self.settings["projectName"] == "":
+            QtWidgets.QMessageBox.warning(None, "No Project","You need to load or create a project.")
+            return
+        cur = self.settings['conn'].cursor()
+        cur.execute("select name from cases where status=1")
+        result = cur.fetchall()
+        selectedCases = [ _[0] for _ in result ]
+        if len(selectedCases) == 0:
+            QtWidgets.QMessageBox.warning(None, "Non cases have been defined.")
+        cur.execute("select name, id, cid from freecode, coding where coding.cid=freecode.id and freecode.status=1 group by cid order by name")
+        result = cur.fetchall()
+        codes = []
+        for code in result:
+            codes.append(code[0])
+        Mat = {}
+        for case in selectedCases:
+            val = []
+            for code in codes:
+                cur.execute("select count(coding.fid) as n from coding, freecode where coding.cid=freecode.id and freecode.name=? and coding.fid in \
+                    (select fid from caselinkage, cases where caselinkage.caseid=cases.id and cases.name=?)", (code, case))
+                result = cur.fetchall()
+                for n in result:
+                    val.append(str(n[0]))
+            Mat[case] = val
+        Dialog_vcf = QtWidgets.QDialog()
+        ui = Ui_Dialog_vcf(Mat)
+        ui.setupUi(Dialog_vcf)
+        ui.tableWidget.setVerticalHeaderLabels(codes)
+        # hack to display code names
+        Dialog_vcf.exec_()
 
     def repSummary(self):
         """ A summary of each code by code count, average characters and average word count """
