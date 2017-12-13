@@ -26,6 +26,7 @@ https://github.com/ccbogel/PyQDA
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from Memo import Ui_Dialog_memo
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -50,8 +51,9 @@ class Ui_Dialog_vcf(object):
 
     data = None
 
-    def __init__(self, data):
+    def __init__(self, data, conn=None):
         self.data = data
+        self.conn = conn
 
     def setupUi(self, Dialog_vcf):
         Dialog_vcf.setObjectName(_fromUtf8("Dialog_vcf"))
@@ -80,6 +82,8 @@ class Ui_Dialog_vcf(object):
         self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.setSortingEnabled(True)
+        if self.conn is not None:
+            self.tableWidget.clicked.connect(self.getCoding)
 
         self.retranslateUi(Dialog_vcf)
         QtCore.QMetaObject.connectSlotsByName(Dialog_vcf)
@@ -87,6 +91,21 @@ class Ui_Dialog_vcf(object):
     def retranslateUi(self, Dialog_vcf):
         Dialog_vcf.setWindowTitle(_translate("Dialog_vcf", "Code Frequencies", None))
 
+    def getCoding(self):
+        selected = self.tableWidget.selectedIndexes()[0]
+        case = self.tableWidget.horizontalHeaderItem(selected.column()).text()
+        code = self.tableWidget.verticalHeaderItem(selected.row()).text()
+        Dialog_memo = QtWidgets.QDialog()
+        ui = Ui_Dialog_memo(memo="")
+        ui.setupUi(Dialog_memo, title="Case profile: case=%s code=%s" % (case, code))
+        cur = self.conn.cursor()
+        cur.execute("select seltext, source.name from coding join source on coding.fid=source.id where coding.cid in (select id from freecode where name=?) and coding.fid in (select fid from caselinkage where caseid in (select id from cases where name=?)) order by fid", (code, case))
+        result = cur.fetchall()
+        for seltext, filename in result:
+            ui.plainTextEdit.appendHtml("<h2>%s</h2>" % filename)
+            ui.plainTextEdit.appendHtml(seltext + "<br><br>")
+        ui.plainTextEdit.setReadOnly(True)
+        Dialog_memo.exec_()
 
 if __name__ == "__main__":
     import sys

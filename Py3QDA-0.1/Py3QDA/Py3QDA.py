@@ -265,12 +265,14 @@ class MainView(QtWidgets.QMainWindow):
         if self.settings["projectName"] == "":
             QtWidgets.QMessageBox.warning(None, "No Project","You need to load or create a project.")
             return
-        cur = self.settings['conn'].cursor()
+        conn = self.settings['conn']
+        cur = conn.cursor()
         cur.execute("select name from cases where status=1")
         result = cur.fetchall()
         selectedCases = [ _[0] for _ in result ]
         if len(selectedCases) == 0:
-            QtWidgets.QMessageBox.warning(None, "Non cases have been defined.")
+            QtWidgets.QMessageBox.warning(None, "Non cases have been defined.", "You need to define cases.")
+            return
         cur.execute("select name, id, cid from freecode, coding where coding.cid=freecode.id and freecode.status=1 group by cid order by name")
         result = cur.fetchall()
         codes = []
@@ -287,7 +289,7 @@ class MainView(QtWidgets.QMainWindow):
                     val.append(str(n[0]))
             Mat[case] = val
         Dialog_vcf = QtWidgets.QDialog()
-        ui = Ui_Dialog_vcf(Mat)
+        ui = Ui_Dialog_vcf(Mat, conn)
         ui.setupUi(Dialog_vcf)
         ui.tableWidget.setVerticalHeaderLabels(codes)
         # hack to display code names

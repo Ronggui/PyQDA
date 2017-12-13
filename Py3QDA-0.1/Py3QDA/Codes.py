@@ -627,7 +627,7 @@ class Ui_Dialog_codes(object):
         w = sizeObject.width()
         #print ("w" + str(w)+" h"+str(h))
         w = min([w * 0.8, 1200])
-        h =min([h*0.8, 800])
+        h = min([h*0.8, 800])
         #if w > 1200: w = 1200
         #if h > 800: h = 800
         #if h > 600: h = 600  #temporary for testing to allow me to view the console while program runs

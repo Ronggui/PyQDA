@@ -401,7 +401,7 @@ class Ui_Dialog_cases(object):
                     val.append(str(n[0]))
             Mat[case] = val
         Dialog_vcf = QtWidgets.QDialog()
-        ui = Ui_Dialog_vcf(Mat)
+        ui = Ui_Dialog_vcf(Mat, self.settings['conn'])
         ui.setupUi(Dialog_vcf)
         ui.tableWidget.setVerticalHeaderLabels(codes)
         # hack to display code names
@@ -585,7 +585,7 @@ class Ui_Dialog_cases(object):
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         #ENDADDIN
-        
+
         self.tableWidget_cases = QtWidgets.QTableWidget(self.splitter)
         self.tableWidget_cases.setGeometry(QtCore.QRect(10, 90, 461, h - 200))
         self.tableWidget_cases.setObjectName(_fromUtf8("tableWidget_cases"))
