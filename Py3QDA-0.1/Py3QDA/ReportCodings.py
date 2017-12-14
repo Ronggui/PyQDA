@@ -312,8 +312,8 @@ class Ui_Dialog_reportCodings(object):
             colorhex = self.codeColors.getHexFromName(row[COLOR])
             if colorhex == "":
                 colorhex = "#CCCCCC"
-            title = "<em><span style=\"background-color:" + colorhex + "\">"+row[CODENAME] + "</span>, "
-            title +=" "+ fileOrCase + ": " + row[FILEORCASENAME] + "</em>"
+            title = "<h3><span style=\"background-color:" + colorhex + "\">"+row[CODENAME] + "</span>, "
+            title +=" "+ fileOrCase + ": " + row[FILEORCASENAME] + "</h3>"
             self.textEdit.appendHtml(title)
             self.textEdit.appendPlainText(row[SELTEXT] + "\n")
 

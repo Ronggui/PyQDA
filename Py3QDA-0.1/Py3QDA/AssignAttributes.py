@@ -29,6 +29,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import datetime # ADDIN
 import os
 import csv
+from Memo import Ui_Dialog_memo
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -240,6 +241,25 @@ class Ui_Dialog_assignAttributes(object):
             f.close()
             QtWidgets.QMessageBox.information(None, "Attributes File Export", str(fileName) + " exported")
 
+    def view_codings(self):
+        x  = self.tableWidget.currentRow()
+        y  = self.tableWidget.currentColumn()
+        if y > 0:
+            return
+        if self.attrType == "Cases":
+            case = self.tableWidget.item(x, 0).text()
+            Dialog_memo = QtWidgets.QDialog()
+            ui = Ui_Dialog_memo(memo="")
+            ui.setupUi(Dialog_memo, title="Case profile: case=%s" % case)
+            cur = self.settings['conn'].cursor()
+            cur.execute("select seltext, source.name, freecode.name from coding join source, freecode on coding.fid=source.id and coding.cid=freecode.id where coding.fid in (select fid from caselinkage where caseid in (select id from cases where name=?)) order by cid, fid", (case,))
+            result = cur.fetchall()
+            for seltext, filename, codename in result:
+                ui.plainTextEdit.appendHtml("<h2><font color='red'>Code: %s; File: %s</font></h2>" % (codename, filename))
+                ui.plainTextEdit.appendHtml(seltext + "<br><br>")
+            ui.plainTextEdit.setReadOnly(True)
+            Dialog_memo.exec_()
+
     def setupUi(self, Dialog_assignAttributes):
         Dialog_assignAttributes.setObjectName(_fromUtf8("Dialog_assignAttributes"))
         Dialog_assignAttributes.resize(854, 485)
@@ -272,6 +292,7 @@ class Ui_Dialog_assignAttributes(object):
         self.radioButton.clicked.connect(self.selectCases)
         self.radioButton_2.clicked.connect(self.selectFiles)
         self.tableWidget.cellChanged.connect(self.cellModified)
+        self.tableWidget.clicked.connect(self.view_codings)
         self.pushButton_exportattr.clicked.connect(self.exportTextAttributes)
         #END ADDIN
 

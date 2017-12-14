@@ -623,15 +623,11 @@ class Ui_Dialog_codes(object):
         #w = QtWidgets.QApplication.desktop().width()
         #h = QtWidgets.QApplication.desktop().height()
         sizeObject = QtWidgets.QDesktopWidget().screenGeometry(-1)
-        h = sizeObject.height()
-        w = sizeObject.width()
-        #print ("w" + str(w)+" h"+str(h))
-        w = min([w * 0.8, 1200])
-        h = min([h*0.8, 800])
-        #if w > 1200: w = 1200
-        #if h > 800: h = 800
-        #if h > 600: h = 600  #temporary for testing to allow me to view the console while program runs
-        Dialog_codes.resize(w, h - 80)
+        h = sizeObject.height() * 0.8
+        w = sizeObject.width() * 0.8
+        h = min([h, 1000])
+        w = min([w, 2000])
+        Dialog_codes.resize(w, h)
         Dialog_codes.move(20, 20)
 
         self.pushButton_add = QtWidgets.QPushButton(Dialog_codes)
@@ -660,14 +656,14 @@ class Ui_Dialog_codes(object):
         self.pushButton_mark.setObjectName(_fromUtf8("pushButton_mark"))
         #ADDIN SPLITTER
         self.splitter = QtWidgets.QSplitter(Dialog_codes)
-        self.splitter.setGeometry(QtCore.QRect(10, 90, w - 20, h - 200))
+        self.splitter.setGeometry(QtCore.QRect(10, 90, w - 20, h - 100))
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         #END ADDIN
 
         #self.tableWidget_codes = QtWidgets.QTableWidget(Dialog_codes)
         self.tableWidget_codes = QtWidgets.QTableWidget(self.splitter) # ADDED splitter
-        self.tableWidget_codes.setGeometry(QtCore.QRect(10, 90, 461, h - 200))
+        self.tableWidget_codes.setGeometry(QtCore.QRect(10, 90, 461, h - 100))
         self.tableWidget_codes.setObjectName(_fromUtf8("tableWidget_codes"))
         self.tableWidget_codes.setColumnCount(0)
         self.tableWidget_codes.setRowCount(0)
@@ -676,7 +672,9 @@ class Ui_Dialog_codes(object):
 
         #ADDIN
         self.fillTableWidget_codes()
+        #self.textEd_area = QtWidgets.QScrollArea(self.splitter)
         self.textEd = QtWidgets.QPlainTextEdit(self.splitter)
+        #self.textEd_area.setWidget(self.textEd)
         self.textEd.setReadOnly(True)
         self.textEd.setGeometry(QtCore.QRect(500, 90, w - 550, h - 200))
         self.textEd.setObjectName(_fromUtf8("textEd"))

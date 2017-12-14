@@ -540,11 +540,12 @@ class Ui_Dialog_cases(object):
 
     def setupUi(self, Dialog_cases):
         Dialog_cases.setObjectName(_fromUtf8("Dialog_cases"))
-        w = QtWidgets.QApplication.desktop().width()
-        h = QtWidgets.QApplication.desktop().height()
-        if w > 1200: w = 1200
-        if h > 800: h = 800
-        Dialog_cases.resize(w, h-80)
+        sizeObject = QtWidgets.QDesktopWidget().screenGeometry(-1)
+        h = sizeObject.height() * 0.8
+        w = sizeObject.width() * 0.8
+        h = min([h, 1000])
+        w = min([w, 2000])
+        Dialog_cases.resize(w, h)
         Dialog_cases.move(20, 20)
 
         self.pushButton_add = QtWidgets.QPushButton(Dialog_cases)
@@ -581,13 +582,13 @@ class Ui_Dialog_cases(object):
 
         #ADDIN
         self.splitter = QtWidgets.QSplitter(Dialog_cases)
-        self.splitter.setGeometry(QtCore.QRect(10, 90, w - 20, h - 200))
+        self.splitter.setGeometry(QtCore.QRect(10, 90, w - 20, h - 100))
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         #ENDADDIN
 
         self.tableWidget_cases = QtWidgets.QTableWidget(self.splitter)
-        self.tableWidget_cases.setGeometry(QtCore.QRect(10, 90, 461, h - 200))
+        self.tableWidget_cases.setGeometry(QtCore.QRect(10, 90, 461, h - 100))
         self.tableWidget_cases.setObjectName(_fromUtf8("tableWidget_cases"))
         self.tableWidget_cases.setColumnCount(0)
         self.tableWidget_cases.setRowCount(0)

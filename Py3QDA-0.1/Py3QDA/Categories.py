@@ -678,14 +678,13 @@ class Ui_Dialog_cats(object):
 
     def setupUi(self, Dialog_cats):
         Dialog_cats.setObjectName(_fromUtf8("Dialog_cats"))
-        #Dialog_cats.resize(860, 569)
         #ADDIN
-        w = QtWidgets.QApplication.desktop().width()
-        h = QtWidgets.QApplication.desktop().height()
-        if h > 800: h = 800
-        if w > 1000:
-            w = 1000
-        Dialog_cats.resize(w - 100, h-80)
+        sizeObject = QtWidgets.QDesktopWidget().screenGeometry(-1)
+        h = sizeObject.height() * 0.8
+        w = sizeObject.width() * 0.8
+        h = min([h, 1000])
+        w = min([w, 2000])
+        Dialog_cats.resize(w, h)
         Dialog_cats.move(20, 20)
         #END ADDIN
         self.pushButton_add = QtWidgets.QPushButton(Dialog_cats)
@@ -719,7 +718,7 @@ class Ui_Dialog_cats(object):
         self.comboBox.addItem(_fromUtf8(""))
         self.splitter = QtWidgets.QSplitter(Dialog_cats)
         #self.splitter.setGeometry(QtCore.QRect(10, 90, 831, 471))
-        self.splitter.setGeometry(QtCore.QRect(10, 90, w - 120, h - 200)) # addin
+        self.splitter.setGeometry(QtCore.QRect(10, 90, w - 20, h - 100)) # addin
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         self.tableWidget_codes = QtWidgets.QTableWidget(self.splitter)

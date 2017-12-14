@@ -422,12 +422,12 @@ class Ui_Dialog_fcats(object):
 
     def setupUi(self, Dialog_cats):
         Dialog_cats.setObjectName(_fromUtf8("Dialog_cats"))
-        w = QtWidgets.QApplication.desktop().width()
-        w2 = w -160
-        h = QtWidgets.QApplication.desktop().height()
-        h2 = h - 100
-        if h2 > 800: h2 = 800
-        Dialog_cats.resize(w2, h2)
+        sizeObject = QtWidgets.QDesktopWidget().screenGeometry(-1)
+        h = sizeObject.height() * 0.8
+        w = sizeObject.width() * 0.8
+        h = min([h, 1000])
+        w = min([w, 2000])
+        Dialog_cats.resize(w, h)
         Dialog_cats.move(20, 20)
 
         self.pushButton_add = QtWidgets.QPushButton(Dialog_cats)
@@ -456,20 +456,20 @@ class Ui_Dialog_fcats(object):
 
         #ADDIN
         self.splitter = QtWidgets.QSplitter(Dialog_cats)
-        self.splitter.setGeometry(QtCore.QRect(10, 90, w2 - 20, h2 - 100))
+        self.splitter.setGeometry(QtCore.QRect(10, 90, w - 20, h - 100))
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         #END ADDIN
 
         self.tableWidget_files = QtWidgets.QTableWidget(self.splitter)
-        self.tableWidget_files.setGeometry(QtCore.QRect(500, 90, 460, h2-200))
+        self.tableWidget_files.setGeometry(QtCore.QRect(500, 90, 460, h-200))
         self.tableWidget_files.setObjectName(_fromUtf8("tableWidget_files"))
         self.tableWidget_files.setColumnCount(0)
         self.tableWidget_files.setRowCount(0)
         #self.tableWidget_files.setSelectionMode( QtWidgets.QAbstractItemView.SingleSelection )
 
         self.tableWidget_cats = QtWidgets.QTableWidget(self.splitter)
-        self.tableWidget_cats.setGeometry(QtCore.QRect(10, 90, 460, h2-200))
+        self.tableWidget_cats.setGeometry(QtCore.QRect(10, 90, 460, h-200))
         self.tableWidget_cats.setObjectName(_fromUtf8("tableWidget_cats"))
         self.tableWidget_cats.setColumnCount(0)
         self.tableWidget_cats.setRowCount(0)
