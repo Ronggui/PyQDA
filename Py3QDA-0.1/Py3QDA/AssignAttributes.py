@@ -259,6 +259,19 @@ class Ui_Dialog_assignAttributes(object):
                 ui.plainTextEdit.appendHtml(seltext + "<br><br>")
             ui.plainTextEdit.setReadOnly(True)
             Dialog_memo.exec_()
+        if self.attrType == "Files":
+            file = self.tableWidget.item(x, 0).text()
+            Dialog_memo = QtWidgets.QDialog()
+            ui = Ui_Dialog_memo(memo="")
+            ui.setupUi(Dialog_memo, title="Codings associated with %s" % file)
+            cur = self.settings['conn'].cursor()
+            cur.execute("select seltext, source.name, freecode.name from coding join source, freecode on coding.fid=source.id and coding.cid=freecode.id where coding.fid in (select id from source where name=?) order by cid, fid", (file,))
+            result = cur.fetchall()
+            for seltext, filename, codename in result:
+                ui.plainTextEdit.appendHtml("<h2><font color='red'>Code: %s; File: %s</font></h2>" % (codename, filename))
+                ui.plainTextEdit.appendHtml(seltext + "<br><br>")
+            ui.plainTextEdit.setReadOnly(True)
+            Dialog_memo.exec_()
 
     def setupUi(self, Dialog_assignAttributes):
         Dialog_assignAttributes.setObjectName(_fromUtf8("Dialog_assignAttributes"))
