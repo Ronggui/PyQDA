@@ -62,7 +62,8 @@ class Ui_Dialog_codes(object):
     headerLabels = ["Code", "Color", "Memo", "id"]
 
     settings = None
-    freecode = []
+    freecode ={}
+    #freecode = []
     codeColors = CodeColors()
     filenames = []
     filename = {}  # contains filename and file id returned from SelectFile
@@ -73,7 +74,8 @@ class Ui_Dialog_codes(object):
     eventFilter = None
 
     def __init__(self, settings):
-        self.freecode = []
+        #self.freecode = []
+        self.freecode = {}
         self.filenames = []
         self.fileId = '' # file Id of the open file in Editor
         self.annotations = []
@@ -83,8 +85,10 @@ class Ui_Dialog_codes(object):
         cur.execute("select name, memo, owner, date, dateM, id, status, color from freecode")
         result = cur.fetchall()
         for row in result:
-            self.freecode.append({'name': row[0], 'memo': row[1], 'owner': row[2],
-            'date': row[3], 'dateM':row[4], 'id': row[5], 'status': row[6], 'color': row[7]})
+            #self.freecode.append({'name': row[0], 'memo': row[1], 'owner': row[2],
+            #'date': row[3], 'dateM':row[4], 'id': row[5], 'status': row[6], 'color': row[7]})
+            self.freecode[row[0]] = {'name': row[0], 'memo': row[1], 'owner': row[2],
+            'date': row[3], 'dateM':row[4], 'id': row[5], 'status': row[6], 'color': row[7]}
 
         cur.execute("select id, name, status from source")
         result = cur.fetchall()
@@ -102,11 +106,13 @@ class Ui_Dialog_codes(object):
 
         x = self.tableWidget_codes.currentRow()
         y = self.tableWidget_codes.currentColumn()
+        x_code = self.tableWidget_codes.item(x, 0).text()
+        #print(self.freecode)
 
         if y == self.COLOR_COLUMN:
-            #print(self.freecode[x]['color'])
+            #print(self.freecode[x_code]['color'])
             Dialog_colorselect = QtWidgets.QDialog()
-            ui = Ui_Dialog_colorselect(self.freecode[x]['color'])
+            ui = Ui_Dialog_colorselect(self.freecode[x_code]['color'])
             ui.setupUi(Dialog_colorselect)
             ok = Dialog_colorselect.exec_()
             if ok:
@@ -118,17 +124,17 @@ class Ui_Dialog_codes(object):
                     self.tableWidget_codes.clearSelection()
 
                     #update freecode list, database and currently viewed file
-                    self.freecode[x]['color'] = selectedColor['colname']
+                    self.freecode[x_code]['color'] = selectedColor['colname']
                     cur = self.settings['conn'].cursor()
-                    cur.execute("update freecode set color=? where id=?", (self.freecode[x]['color'], self.freecode[x]['id']))
+                    cur.execute("update freecode set color=? where id=?", (self.freecode[x_code]['color'], self.freecode[x_code]['id']))
                     self.settings['conn'].commit()
                     self.unlight()
                     self.highlight()
 
         if y == self.MEMO_COLUMN:
             Dialog_memo = QtWidgets.QDialog()
-            ui = Ui_Dialog_memo(self.freecode[x]['memo'])
-            ui.setupUi(Dialog_memo, "Code memo " + self.freecode[x]['name'])
+            ui = Ui_Dialog_memo(self.freecode[x_code]['memo'])
+            ui.setupUi(Dialog_memo, "Code memo " + self.freecode[x_code]['name'])
             Dialog_memo.exec_()
             memo = ui.getMemo()
 
@@ -138,9 +144,9 @@ class Ui_Dialog_codes(object):
                 self.tableWidget_codes.setItem(x, self.MEMO_COLUMN, QtWidgets.QTableWidgetItem("Yes"))
 
             #update freecode list and database
-            self.freecode[x]['memo'] = str(memo)
+            self.freecode[x_code]['memo'] = str(memo)
             cur = self.settings['conn'].cursor()
-            cur.execute("update freecode set memo=? where id=?", (self.freecode[x]['memo'], self.freecode[x]['id']))
+            cur.execute("update freecode set memo=? where id=?", (self.freecode[x_code]['memo'], self.freecode[x_code]['id']))
             self.settings['conn'].commit()
 
     def cellModified(self):
@@ -150,26 +156,29 @@ class Ui_Dialog_codes(object):
         x = self.tableWidget_codes.currentRow()
         y = self.tableWidget_codes.currentColumn()
         if y == self.NAME_COLUMN:
-            #newCodeText = str(self.tableWidget_codes.item(x, y).text())
             newCodeText = self.tableWidget_codes.item(x, y).text()
             # check that no other code has this text and this is is not empty
             update = True
             if newCodeText == "":
                 update = False
             for c in self.freecode:
-                if c['name'] == newCodeText:
+                if c == newCodeText:
                     update = False
             if update:
                 #update freecode list and database
-                self.freecode[x]['name'] = newCodeText
+                nrow = self.tableWidget_codes.rowCount()
+                all_codes = [self.tableWidget_codes.item(_, y).text() for _ in range(x)]
+                code_changed = set(self.freecode.keys()) - set(all_codes)
+                code_changed = list(code_changed)[0]
+                self.freecode[code_changed]['name'] = newCodeText
                 cur = self.settings['conn'].cursor()
-                cur.execute("update freecode set name=? where id=?", (newCodeText, self.freecode[x]['id']))
+                cur.execute("update freecode set name=? where id=?", (newCodeText, self.freecode[code_changed]['id']))
                 self.settings['conn'].commit()
                 # update filter for tooltip
                 self.eventFilter.setCodes(self.coding, self.freecode)
 
             else:  #put the original text in the cell
-                self.tableWidget_codes.item(x, y).setText(self.freecode[x]['name'])
+                self.tableWidget_codes.item(x, y).setText(self.freecode[x_code]['name'])
 
     def addCode(self):
         """ open addItem dialog to get new code text.
@@ -177,7 +186,7 @@ class Ui_Dialog_codes(object):
         New code is added to the model and database """
 
         Dialog_addCode = QtWidgets.QDialog()
-        ui = Ui_Dialog_addItem(self.freecode)
+        ui = Ui_Dialog_addItem(self.freecode.values())
         ui.setupUi(Dialog_addCode, "Code")
         Dialog_addCode.exec_()
         newCodeText = ui.getNewItem()
@@ -185,17 +194,20 @@ class Ui_Dialog_codes(object):
             # update freecode list and database
             # need to generate a new id as the RQDA database does not have an autoincrement id field
             newid = 1
-            for fc in self.freecode:
+            #for fc in self.freecode:
+            for fc in self.freecode.values():
                 if fc['id'] >= newid: newid = fc['id']+1
             item = {'name':newCodeText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':""}
-            self.freecode.append(item)
+            #self.freecode.append(item)
+            self.freecode[newCodeText] = item
             cur = self.settings['conn'].cursor()
             cur.execute("insert into freecode (name,memo,owner,date,dateM,id,status,color) values(?,?,?,?,?,?,?,?)"
                         ,(item['name'],item['memo'],item['owner'],item['date'],item['dateM'],item['id'],item['status'],item['color']))
             self.settings['conn'].commit()
 
             # update table widget
-            for codes in self.freecode:
+            #for codes in self.freecode:
+            for codes in self.freecode.values():
                 self.tableWidget_codes.removeRow(0)
             self.fillTableWidget_codes()
 
@@ -226,9 +238,10 @@ class Ui_Dialog_codes(object):
                 self.tableWidget_codes.removeRow(r)
 
             for id in idsToDelete:
-                for code in self.freecode:
-                    if code['id'] == id:
-                        self.freecode.remove(code)
+                codes = list(self.freecode.keys())
+                for code in codes:
+                    if self.freecode[code]['id'] == id:
+                        self.freecode.pop(code)
                         cur = self.settings['conn'].cursor()
                         #print(str(id) + "  "+ str(type(id)))
                         cur.execute("delete from coding where cid = ?", [id])
@@ -316,11 +329,12 @@ class Ui_Dialog_codes(object):
         for item in self.coding:
             cursor.setPosition(int(item['selfirst']), QtGui.QTextCursor.MoveAnchor)
             cursor.setPosition(int(item['selend']), QtGui.QTextCursor.KeepAnchor)
-
-            freecodeindex = list(map(itemgetter('id'), self.freecode)).index(item['cid'])
+            id2name = {self.freecode[k]['id']:self.freecode[k] for k in self.freecode}
+            #freecodeindex = list(map(itemgetter('name'), self.freecode)).index(item['cid'])
             # map return an iter in py3
             colors = CodeColors()
-            colorhex = colors.getHexFromName(self.freecode[freecodeindex]['color'])
+            #colorhex = colors.getHexFromName(self.freecode[freecodeindex]['color'])
+            colorhex = colors.getHexFromName(id2name[item['cid']]['color'])
             if colorhex == "":
                 colorhex = "#CCCCCC"
             fmt.setBackground(QtGui.QBrush(QtGui.QColor(colorhex)))
@@ -354,6 +368,7 @@ class Ui_Dialog_codes(object):
             QtWidgets.QMessageBox.warning(None, 'Warning', "No file was selected", QtWidgets.QMessageBox.Ok)
             return
         row = self.tableWidget_codes.currentRow()
+        row_code = self.tableWidget_codes.item(row, 0).text()
         if row == -1:
             QtWidgets.QMessageBox.warning(None, 'Warning', "No code was selected", QtWidgets.QMessageBox.Ok)
             return
@@ -363,7 +378,8 @@ class Ui_Dialog_codes(object):
         selstart = self.textEd.textCursor().selectionStart()
         selend = self.textEd.textCursor().selectionEnd()
         #add new item to coding, add to database and update GUI
-        item = {'cid':int(self.freecode[row]['id']), 'fid':int(self.filename['id']),
+        print(row, self.freecode[row_code])
+        item = {'cid':int(self.freecode[row_code]['id']), 'fid':int(self.filename['id']),
         'seltext':selectedText, 'selfirst':selstart, 'selend':selend,
         'owner':self.settings['codername'], 'memo':"", 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'status':1}
         self.coding.append(item)
@@ -394,7 +410,7 @@ class Ui_Dialog_codes(object):
         for item in self.coding:
             if item['selfirst'] <= pos and item['selend'] >= pos:
                 # print str(item['selfirst'])+"  "+str(item['selend'])
-                for code in self.freecode:
+                for code in self.freecode.values():
                     if code['id'] == item['cid']:
                         labelText = "Code: " + code['name']
         self.label_code.setText(labelText)
@@ -512,6 +528,7 @@ class Ui_Dialog_codes(object):
         """ Autocode text in one file or all files with selected code """
 
         row = self.tableWidget_codes.currentRow()
+        row_code = self.tableWidget_codes.item(row, 0).text()
         if row == -1:
             QtWidgets.QMessageBox.warning(None, 'Warning',"No code was selected", QtWidgets.QMessageBox.Ok)
             return
@@ -521,7 +538,7 @@ class Ui_Dialog_codes(object):
         dialog =  QtWidgets.QInputDialog(None)
         dialog.setWindowTitle("Autocode")
         dialog.setInputMode( QtWidgets.QInputDialog.TextInput)
-        dialog.setLabelText("Autocode a word or phrase with:\n" + str(self.freecode[row]['name']))
+        dialog.setLabelText("Autocode a word or phrase with:\n" + str(self.freecode[row_code]['name']))
         dialog.resize(200, 20)
         ok = dialog.exec_()
         if not ok:
@@ -570,7 +587,7 @@ class Ui_Dialog_codes(object):
                 if endPos > len(text):
                     endPos = len(text)
                 seltext = text[startPos:endPos]
-                item = {'cid':int(self.freecode[row]['id']), 'fid':int(file['id']), 'seltext':seltext, 'selfirst':startPos,
+                item = {'cid':int(self.freecode[row_code]['id']), 'fid':int(file['id']), 'seltext':seltext, 'selfirst':startPos,
                          'selend':endPos, 'owner':self.settings['codername'], 'memo':"",
                           'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'status':1}
                 #print item
@@ -592,7 +609,8 @@ class Ui_Dialog_codes(object):
 
         self.tableWidget_codes.setColumnCount(len(self.headerLabels))
         self.tableWidget_codes.setHorizontalHeaderLabels(self.headerLabels)
-        for row, code in enumerate(self.freecode):
+        for row, codename in enumerate(self.freecode):
+            code = self.freecode[codename]
             self.tableWidget_codes.insertRow(row)
             self.tableWidget_codes.setItem(row, self.NAME_COLUMN, QtWidgets.QTableWidgetItem(code['name']))
             colnametmp = code['color']
@@ -748,7 +766,8 @@ class TT_EventFilter(QtCore.QObject):
         self.coding = coding
         self.freecodes = codes
         for item in self.coding:
-            for c in self.freecodes:
+            for c_name in self.freecodes:
+                c = self.freecodes[c_name]
                 if item['cid'] == c['id']:
                     item['name'] = c['name']
 
