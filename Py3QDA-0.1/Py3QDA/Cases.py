@@ -592,7 +592,7 @@ class Ui_Dialog_cases(object):
         self.tableWidget_cases.setObjectName(_fromUtf8("tableWidget_cases"))
         self.tableWidget_cases.setColumnCount(0)
         self.tableWidget_cases.setRowCount(0)
-        self.tableWidget_cases.setSortingEnabled(True)
+        self.tableWidget_cases.setSortingEnabled(False)
         #self.pushButton_attributes = QtWidgets.QPushButton(Dialog_cases)
         #self.pushButton_attributes.setGeometry(QtCore.QRect(110, 50, 131, 27))
         #self.pushButton_attributes.setObjectName(_fromUtf8("pushButton_attributes"))

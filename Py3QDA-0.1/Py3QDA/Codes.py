@@ -167,7 +167,7 @@ class Ui_Dialog_codes(object):
             if update:
                 #update freecode list and database
                 nrow = self.tableWidget_codes.rowCount()
-                all_codes = [self.tableWidget_codes.item(_, y).text() for _ in range(x)]
+                all_codes = [self.tableWidget_codes.item(_, y).text() for _ in range(nrow)]
                 code_changed = set(self.freecode.keys()) - set(all_codes)
                 code_changed = list(code_changed)[0]
                 self.freecode[code_changed]['name'] = newCodeText
@@ -176,9 +176,8 @@ class Ui_Dialog_codes(object):
                 self.settings['conn'].commit()
                 # update filter for tooltip
                 self.eventFilter.setCodes(self.coding, self.freecode)
-
             else:  #put the original text in the cell
-                self.tableWidget_codes.item(x, y).setText(self.freecode[x_code]['name'])
+                self.tableWidget_codes.item(x, y).setText(self.freecode[newCodeText]['name'])
 
     def addCode(self):
         """ open addItem dialog to get new code text.

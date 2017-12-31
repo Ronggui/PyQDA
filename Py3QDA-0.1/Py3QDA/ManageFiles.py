@@ -52,7 +52,8 @@ except AttributeError:
 class Ui_Dialog_manageFiles(object):
     """    View, import, export, rename and delete text files.    """
 
-    sourcetext = []
+    #sourcetext = []
+    sourcetext = {}
     settings = None
     textDialog = None
     MEMO_COLUMN = 1
@@ -65,13 +66,14 @@ class Ui_Dialog_manageFiles(object):
     def __init__(self, settings):
         if settings is not None:
             self.log = ""
-            self.sourcetext = []
+            self.sourcetext = {}
             self.settings = settings
             cur = self.settings['conn'].cursor()
             cur.execute("select name, id, file, memo, owner, date, dateM, status from source order by name")
             result = cur.fetchall()
             for row in result:
-                self.sourcetext.append({'name':row[0], 'id':row[1], 'file':row[2], 'memo':row[3], 'owner':row[4], 'date':row[5], 'dateM':row[6], 'status':row[7]})
+                #self.sourcetext.append({'name':row[0], 'id':row[1], 'file':row[2], 'memo':row[3], 'owner':row[4], 'date':row[5], 'dateM':row[6], 'status':row[7]})
+                self.sourcetext[row[0]] = {'name': row[0], 'id': row[1], 'file': row[2], 'memo': row[3], 'owner': row[4], 'date': row[5], 'dateM': row[6], 'status': row[7]}
 
     def cellSelected(self):
         """ When the table widget memo cell is selected display the memo.
@@ -82,9 +84,10 @@ class Ui_Dialog_manageFiles(object):
         y = self.tableWidget_files.currentColumn()
 
         if y == self.MEMO_COLUMN:
+            x_file = self.tableWidget_files.item(x, self.NAME_COLUMN).text()
             Dialog_memo = QtWidgets.QDialog()
-            ui = Ui_Dialog_memo(self.sourcetext[x]['memo'])
-            ui.setupUi(Dialog_memo, "File memo " + self.sourcetext[x]['name'])
+            ui = Ui_Dialog_memo(self.sourcetext[x_file]['memo'])
+            ui.setupUi(Dialog_memo, "File memo " + self.sourcetext[x_file]['name'])
             Dialog_memo.exec_()
             memo = ui.getMemo()
             if memo == "":
@@ -94,9 +97,9 @@ class Ui_Dialog_manageFiles(object):
 
             # update sourcetext list and database
             #self.sourcetext[x]['memo'] = memo.encode('raw_unicode_escape')
-            self.sourcetext[x]['memo'] = memo
+            self.sourcetext[x_file]['memo'] = memo
             cur = self.settings['conn'].cursor()
-            cur.execute("update source set memo=? where id=?", (self.sourcetext[x]['memo'], self.sourcetext[x]['id']))
+            cur.execute("update source set memo=? where id=?", (self.sourcetext[x_file]['memo'], self.sourcetext[x_file]['id']))
             self.settings['conn'].commit()
 
     def cellModified(self):
@@ -104,6 +107,7 @@ class Ui_Dialog_manageFiles(object):
 
         x = self.tableWidget_files.currentRow()
         y = self.tableWidget_files.currentColumn()
+
         if y == self.NAME_COLUMN:
             newText = str(self.tableWidget_files.item(x, y).text()).strip()
 
@@ -112,35 +116,44 @@ class Ui_Dialog_manageFiles(object):
             if newText == "":
                 update = False
             for c in self.sourcetext:
-                if c['name'] == newText:
+                #if c['name'] == newText:
+                if c == newText:
                     update = False
             if update:
+                nrow = self.tableWidget_files.rowCount()
+                all_files = [self.tableWidget_files.item(_, y).text() for _ in range(nrow)]
+                file_changed = set(self.sourcetext.keys()) - set(all_files)
+                file_changed = list(file_changed)[0]
                 #update source list and database
-                self.sourcetext[x]['name'] = newText
+                self.sourcetext[file_changed]['name'] = newText
                 cur = self.settings['conn'].cursor()
-                cur.execute("update source set name=? where id=?", (newText, self.sourcetext[x]['id']))
+                cur.execute("update source set name=? where id=?", (newText, self.sourcetext[file_changed]['id']))
                 self.settings['conn'].commit()
             else:  #put the original text in the cell
-                self.tableWidget_files.item(x, y).setText(self.sourcetext[x]['name'])
+                self.tableWidget_files.item(x, y).setText(self.sourcetext[newText]['name'])
 
     def viewFile(self):
         """ View and edit the file contents """
 
         x = self.tableWidget_files.currentRow()
+        if x != -1:
+            x_file = self.tableWidget_files.item(x, 0).text()
+        else:
+            return
         Dialog_memo = QtWidgets.QDialog()
-        text = self.sourcetext[x]['file']
+        text = self.sourcetext[x_file]['file']
         ui = Ui_Dialog_memo(text)
-        ui.setupUi(Dialog_memo, "View file: " + self.sourcetext[x]['name'] +" (ID:"+ str(self.sourcetext[x]['id'])+") "
-                   +self.sourcetext[x]['owner'] + ", " + self.sourcetext[x]['date'])
+        ui.setupUi(Dialog_memo, "View file: " + self.sourcetext[x_file]['name'] +" (ID:"+ str(self.sourcetext[x_file]['id'])+") "
+                   +self.sourcetext[x_file]['owner'] + ", " + self.sourcetext[x_file]['date'])
         Dialog_memo.exec_()
         # update model and database
         fileText = ui.getMemo() ## unicode
-        if fileText != self.sourcetext[x]['file']:
+        if fileText != self.sourcetext[x_file]['file']:
             # NEED TO CHECK THAT THERE ARE NO CODES OR ANNOATIONS OR CASES LINKED TO THIS FILE BEFORE COMMITING CHANGE
             # CHECK NOT YET IMPLEMENTED
-            self.sourcetext[x]['file'] = fileText
+            self.sourcetext[x_file]['file'] = fileText
             cur = self.settings['conn'].cursor()
-            cur.execute("update source set file=? where id=?", (self.sourcetext[x]['file'], self.sourcetext[x]['id']))
+            cur.execute("update source set file=? where id=?", (self.sourcetext[x_file]['file'], self.sourcetext[x_file]['id']))
             self.settings['conn'].commit()
         else:
             pass
@@ -158,13 +171,13 @@ class Ui_Dialog_manageFiles(object):
             QtWidgets.QMessageBox.warning(None, 'Warning',"No filename was selected", QtWidgets.QMessageBox.Ok)
             return
         #check for non-unique filename
-        if any(d['name'] == fileName for d in self.sourcetext):
+        if any(d == fileName for d in self.sourcetext):
             QtWidgets.QMessageBox.warning(None, 'Warning',"Filename in use", QtWidgets.QMessageBox.Ok)
             return
 
         # increment fileId until a spare id is available
         fileId = 1
-        while any(d['id'] == fileId for d in self.sourcetext):
+        while any(self.sourcetext[d]['id'] == fileId for d in self.sourcetext):
             fileId = fileId + 1
 
         # update database
@@ -173,14 +186,15 @@ class Ui_Dialog_manageFiles(object):
         cur.execute("insert into source(name,id,file,memo,owner,date,dateM,status) values(?,?,?,?,?,?,?,?)",
                     (newFile['name'],newFile['id'],newFile['file'],newFile['memo'],newFile['owner'],newFile['date'],newFile['dateM'],newFile['status']))
         self.settings['conn'].commit()
-        self.log +=newFile['name'] + " added.\n"
+        self.log += newFile['name'] + " added.\n"
 
         # clear and refill table widget
         for r in self.sourcetext:
             self.tableWidget_files.removeRow(0)
 
-        self.sourcetext.append(newFile)
-        for row, itm in enumerate(self.sourcetext):
+        self.sourcetext[fileName] = newFile
+        for row, k in enumerate(self.sourcetext):
+            itm = self.sourcetext[k]
             self.tableWidget_files.insertRow(row)
             item = QtWidgets.QTableWidgetItem(itm['name'])
             self.tableWidget_files.setItem(row,self.NAME_COLUMN, item)
@@ -289,12 +303,12 @@ class Ui_Dialog_manageFiles(object):
                 QtWidgets.QMessageBox.warning(None, 'Warning', str(importErrors) + " lines not imported", QtWidgets.QMessageBox.Ok)
 
         # Final checks: check for duplicated filename and update model, widget and database
-        if any(d['name'] == fileName for d in self.sourcetext):
+        if any(d == fileName for d in self.sourcetext):
             QtWidgets.QMessageBox.warning(None, 'Duplicate file', "Duplicate filename.\nFile not imported", QtWidgets.QMessageBox.Ok)
             return
         # increment fileId until a spare id is available
         fileId = 1
-        while any(d['id'] == fileId for d in self.sourcetext):
+        while any(self.sourcetext[d]['id'] == fileId for d in self.sourcetext):
             fileId += 1
 
         newFile = {'name':fileName, 'id':fileId, 'file': plainText, 'memo':"",
@@ -333,14 +347,18 @@ class Ui_Dialog_manageFiles(object):
         # clear and refill table widget
         for r in self.sourcetext:
             self.tableWidget_files.removeRow(0)
-        self.sourcetext.append(newFile)
+        self.sourcetext[fileName] = newFile
         self.fillTableWidget_files()
 
     def exportFile(self):
         """ Export file to a plain text file, filename will have .txt ending """
 
         x = self.tableWidget_files.currentRow()
-        fileName = self.sourcetext[x]['name']
+        if x == -1:
+            return
+        else:
+            x_file = self.tableWidget_files.item(x, self.NAME_COLUMN).text()
+        fileName = self.sourcetext[x_file]['name']
         if len(fileName) > 5 and (fileName[-5:] == ".html" or fileName[-5:] == ".docx"):
             fileName = fileName[0:len(fileName) - 5]
         if len(fileName) > 4 and (fileName[-4:] == ".htm" or fileName[-4:] == ".odt" or fileName[-4] == ".txt"):
@@ -351,8 +369,7 @@ class Ui_Dialog_manageFiles(object):
         if directory:
             fileName = directory + "/" + fileName
             print (("Exporting:  to " + fileName))
-            filedata = self.sourcetext[x]['file']
-            #filedata = filedata.encode('utf-8')
+            filedata = self.sourcetext[x_file]['file']
             f = open(fileName, 'w', encoding='utf8')
             f.write(filedata)
             f.close()
@@ -364,10 +381,13 @@ class Ui_Dialog_manageFiles(object):
         """ Delete file from database and update model and widget """
 
         x = self.tableWidget_files.currentRow()
-        fileId = self.sourcetext[x]['id']
-        #print("Delete row: " + str(x))
+        if x == -1:
+            return
+        else:
+            x_file = self.tableWidget_files.item(x, 0).text()
+        fileId = self.sourcetext[x_file]['id']
         Dialog_confirmDelete = QtWidgets.QDialog()
-        ui = Ui_Dialog_confirmDelete(self.sourcetext[x]['name'])
+        ui = Ui_Dialog_confirmDelete(self.sourcetext[x_file]['name'])
         ui.setupUi(Dialog_confirmDelete)
         ok = Dialog_confirmDelete.exec_()
 
@@ -381,10 +401,12 @@ class Ui_Dialog_manageFiles(object):
             cur.execute("delete from fileAttr where fileID = ?", [fileId])
             self.settings['conn'].commit()
 
-            for item in self.sourcetext:
+            all_files = list(self.sourcetext.keys())
+            for file in all_files:
+                item = self.sourcetext[file]
                 if item['id'] == fileId:
                     self.log += item['name'] + " deleted.\n"
-                    self.sourcetext.remove(item)
+                    self.sourcetext.pop(file)
             self.tableWidget_files.removeRow(x)
 
     def fillTableWidget_files(self):
@@ -394,7 +416,8 @@ class Ui_Dialog_manageFiles(object):
         self.tableWidget_files.setHorizontalHeaderLabels(self.headerLabels)
         self.tableWidget_files.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
 
-        for row, details in enumerate(self.sourcetext):
+        for row, k in enumerate(self.sourcetext):
+            details = self.sourcetext[k]
             self.tableWidget_files.insertRow(row)
             self.tableWidget_files.setItem(row, self.NAME_COLUMN, QtWidgets.QTableWidgetItem(details['name']))
             item = QtWidgets.QTableWidgetItem(details['date'])
