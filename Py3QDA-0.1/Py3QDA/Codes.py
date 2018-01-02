@@ -206,7 +206,7 @@ class Ui_Dialog_codes(object):
 
             # update table widget
             #for codes in self.freecode:
-            for codes in self.freecode.values():
+            for codes in self.freecode:
                 self.tableWidget_codes.removeRow(0)
             self.fillTableWidget_codes()
 
@@ -367,17 +367,15 @@ class Ui_Dialog_codes(object):
             QtWidgets.QMessageBox.warning(None, 'Warning', "No file was selected", QtWidgets.QMessageBox.Ok)
             return
         row = self.tableWidget_codes.currentRow()
-        row_code = self.tableWidget_codes.item(row, 0).text()
         if row == -1:
             QtWidgets.QMessageBox.warning(None, 'Warning', "No code was selected", QtWidgets.QMessageBox.Ok)
             return
 
+        row_code = self.tableWidget_codes.item(row, 0).text()
         selectedText = self.textEd.textCursor().selectedText()
-        #selectedText = unicode(selectedText)
         selstart = self.textEd.textCursor().selectionStart()
         selend = self.textEd.textCursor().selectionEnd()
         #add new item to coding, add to database and update GUI
-        print(row, self.freecode[row_code])
         item = {'cid':int(self.freecode[row_code]['id']), 'fid':int(self.filename['id']),
         'seltext':selectedText, 'selfirst':selstart, 'selend':selend,
         'owner':self.settings['codername'], 'memo':"", 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'status':1}
@@ -403,7 +401,7 @@ class Ui_Dialog_codes(object):
         """ When coded text is clicked on, the code name is displayed in the label above the text
         edit widget. """
 
-        labelText = "Code: "
+        labelText = "Code:"
         self.label_code.setText(labelText)
         pos = self.textEd.textCursor().position()
         for item in self.coding:
@@ -411,7 +409,7 @@ class Ui_Dialog_codes(object):
                 # print str(item['selfirst'])+"  "+str(item['selend'])
                 for code in self.freecode.values():
                     if code['id'] == item['cid']:
-                        labelText = "Code: " + code['name']
+                        labelText = labelText + " " + code['name']
         self.label_code.setText(labelText)
 
     def unmark(self):
