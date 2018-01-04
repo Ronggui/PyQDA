@@ -468,6 +468,27 @@ class Ui_Dialog_codes(object):
         self.unlight()
         self.highlight()
 
+    def view_codings(self):
+        x = self.tableWidget_codes.currentRow()
+        if x == -1:
+            return
+        else:
+            selected_code = self.tableWidget_codes.item(x, 0).text()
+            Dialog_memo = QtWidgets.QDialog()
+            ui = Ui_Dialog_memo(memo="")
+            ui.setupUi(Dialog_memo, title="Codings of %s" % selected_code)
+            cur = self.settings['conn'].cursor()
+            cur.execute(
+                "select seltext, source.name, freecode.name from coding join source, freecode on coding.fid=source.id and coding.cid=freecode.id where coding.cid in (select id from freecode where name=?)",
+                (selected_code,))
+            result = cur.fetchall()
+            for seltext, filename, codename in result:
+                ui.plainTextEdit.appendHtml(
+                    "<h2><font color='red'>Code: %s; File: %s</font></h2>" % (codename, filename))
+                ui.plainTextEdit.appendHtml(seltext + "<br><br>")
+            ui.plainTextEdit.setReadOnly(True)
+            Dialog_memo.exec_()
+
     def annotate(self):
         """ Add an annotation: or memo text to the current cursor position.
         The position is at a point infornt of the cursor.
@@ -657,6 +678,9 @@ class Ui_Dialog_codes(object):
         #self.pushButton_memo = QtWidgets.QPushButton(Dialog_codes)
         #self.pushButton_memo.setGeometry(QtCore.QRect(370, 10, 98, 27))
         #self.pushButton_memo.setObjectName(_fromUtf8("pushButton_memo"))
+        self.pushButton_viewcodings = QtWidgets.QPushButton(Dialog_codes)
+        self.pushButton_viewcodings.setGeometry(QtCore.QRect(370, 10, 98, 27))
+        self.pushButton_viewcodings.setObjectName(_fromUtf8("pushButton_viewcodings"))
         self.pushButton_annotate = QtWidgets.QPushButton(Dialog_codes)
         self.pushButton_annotate.setGeometry(QtCore.QRect(10, 50, 98, 27))
         self.pushButton_annotate.setObjectName(_fromUtf8("pushButton_annotate"))
@@ -721,6 +745,7 @@ class Ui_Dialog_codes(object):
         self.pushButton_mark.clicked.connect(self.mark)
         self.pushButton_unmark.clicked.connect(self.unmark)
         #self.pushButton_memo.clicked.connect(self.codeMemo)
+        self.pushButton_viewcodings.clicked.connect(self.view_codings)
         self.pushButton_annotate.clicked.connect(self.annotate)
         self.pushButton_autocode.clicked.connect(self.autocode)
         self.textEd.cursorPositionChanged.connect(self.codeInLabel)
@@ -737,6 +762,7 @@ class Ui_Dialog_codes(object):
         self.pushButton_delete.setText(QtWidgets.QApplication.translate("Dialog_codes", "Delete", None, 1))
         self.pushButton_viewfile.setText(QtWidgets.QApplication.translate("Dialog_codes", "View File", None, 1))
         #self.pushButton_memo.setText(QtWidgets.QApplication.translate("Dialog_codes", "Memo", None, 1))
+        self.pushButton_viewcodings.setText(QtWidgets.QApplication.translate("Dialog_codes", "Codings", None, 1))
         self.pushButton_annotate.setText(QtWidgets.QApplication.translate("Dialog_codes", "Annotate", None, 1))
         self.pushButton_autocode.setText(QtWidgets.QApplication.translate("Dialog_codes", "Auto Code", None, 1))
         self.pushButton_unmark.setText(QtWidgets.QApplication.translate("Dialog_codes", "Unmark", None, 1))
