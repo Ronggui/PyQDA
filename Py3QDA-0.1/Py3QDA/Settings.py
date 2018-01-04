@@ -48,8 +48,8 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
     def accept(self):
         self.settings['codername'] = str(self.lineEdit_coderName.text())
         '''self.settings['font'] = str(self.fontComboBox.currentText()).encode('raw_unicode_escape')
-        self.settings['size'] = self.spinBox.value()
         '''
+        self.settings['fontSize'] = self.spinBox.value()
         if self.checkBox.isChecked():
             self.settings['showIDs'] = True
         else:
@@ -73,20 +73,21 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
         self.lineEdit_coderName.setGeometry(QtCore.QRect(150, 24, 113, 27))
         self.lineEdit_coderName.setObjectName(_fromUtf8("lineEdit_coderName"))
         self.label_coderName = QtWidgets.QLabel(Dialog_settings)
-        self.label_coderName.setGeometry(QtCore.QRect(40, 30, 91, 17))
+        self.label_coderName.setGeometry(QtCore.QRect(30, 30, 91, 17))
         self.label_coderName.setObjectName(_fromUtf8("label_coderName"))
         '''self.fontComboBox = QtWidgets.QFontComboBox(Dialog_settings)
         self.fontComboBox.setGeometry(QtCore.QRect(30, 150, 229, 27))
         self.fontComboBox.setObjectName(_fromUtf8("fontComboBox"))
+        '''
         self.spinBox = QtWidgets.QSpinBox(Dialog_settings)
-        self.spinBox.setGeometry(QtCore.QRect(270, 150, 71, 27))
+        self.spinBox.setGeometry(QtCore.QRect(150, 130, 113, 27))
         self.spinBox.setMinimum(8)
         self.spinBox.setMaximum(32)
         self.spinBox.setSingleStep(2)
         self.spinBox.setObjectName(_fromUtf8("spinBox"))
         self.label = QtWidgets.QLabel(Dialog_settings)
         self.label.setGeometry(QtCore.QRect(30, 130, 66, 17))
-        self.label.setObjectName(_fromUtf8("label"))'''
+        self.label.setObjectName(_fromUtf8("label"))
         self.radioButton_coder1 = QtWidgets.QRadioButton(Dialog_settings)
         self.radioButton_coder1.setGeometry(QtCore.QRect(30, 60, 116, 22))
         self.radioButton_coder1.setObjectName(_fromUtf8("radioButton_coder1"))
@@ -102,10 +103,9 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
         '''
         if self.settings['font'] != "":
             self.fontComboBox.setCurrentFont(QtWidgets.QFont(self.settings['font']))
-        if self.settings['size'] != "":
-            self.spinBox.setValue(self.settings['size'])
         '''
-
+        if self.settings['fontSize'] != "":
+            self.spinBox.setValue(self.settings['fontSize'])
         if self.settings['codertable'] == "coding":
             self.radioButton_coder1.setChecked(True)
         else:
@@ -127,7 +127,7 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
         self.label_coderName.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder Name", None, 1))
         self.radioButton_coder1.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder 1", None, 1))
         self.radioButton_coder2.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder 2", None, 1))
-        #self.label.setText(QtWidgets.QApplication.translate("Dialog_settings", "File Font", None, QtWidgets.1))
+        self.label.setText(QtWidgets.QApplication.translate("Dialog_settings", "Font Size", None, 1))
         self.checkBox.setText(QtWidgets.QApplication.translate("Dialog_settings", "Show IDs", None))
 
 
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Dialog_settings = QtWidgets.QDialog()
-    ui = Ui_Dialog_settings({'codername':'coder', 'codertable':'coding','showIDs':True})
+    ui = Ui_Dialog_settings({'codername':'coder', 'codertable':'coding','showIDs':True, 'fontSize':12})
     ui.setupUi(Dialog_settings)
     Dialog_settings.show()
     sys.exit(app.exec_())

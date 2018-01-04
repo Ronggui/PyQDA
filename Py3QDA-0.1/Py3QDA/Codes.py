@@ -80,6 +80,8 @@ class Ui_Dialog_codes(object):
         self.fileId = '' # file Id of the open file in Editor
         self.annotations = []
         self.settings = settings
+        self.qfont = QtGui.QFont()
+        self.qfont.setPointSize(self.settings['fontSize'])
 
         cur = self.settings['conn'].cursor()
         cur.execute("select name, memo, owner, date, dateM, id, status, color from freecode")
@@ -305,7 +307,8 @@ class Ui_Dialog_codes(object):
             self.unlight()
             self.highlight()
         else:
-            self.textEd.clear()
+            #self.textEd.clear()
+            pass
 
     def unlight(self):
         """ Remove all text highlighting from current file """
@@ -721,6 +724,7 @@ class Ui_Dialog_codes(object):
         self.textEd.setAutoFillBackground(True)
         self.textEd.setToolTip("jj")
         self.textEd.setMouseTracking(True) #
+        self.textEd.setFont(self.qfont)
         self.eventFilter = TT_EventFilter()
         self.textEd.installEventFilter(self.eventFilter)
 

@@ -82,7 +82,7 @@ class MainView(QtWidgets.QMainWindow):
     logWidget = None
 
     settings = {"conn": None, "directory": "", "projectName": "", "showIDs":False,
-    "codername": "default", "codertable": "coding", "font": "", "size": ""}
+    "codername": "default", "codertable": "coding", "fontSize": 12, "size": ""}
     project = {"databaseversion": "", "date": "", "dateM": "", "memo": "",
     "about": "", "imagDir": ""}
 
@@ -526,7 +526,7 @@ class MainView(QtWidgets.QMainWindow):
         Dialog_settings.exec_()
         self.statusBar().showMessage("Ready")
         msg = "Coder:" + self.settings['codername'] + ", CoderTable:"+  self.settings['codertable'] + ", "
-        msg += "Font:" + self.settings['font'] + " " + str(self.settings['size'])
+        msg += "Font Size:" + str(self.settings['fontSize'])
         msg += ", ShowIDs:" + str(self.settings['showIDs'])
         self.logWidget.textEdit.append("Settings: " + msg)
 
