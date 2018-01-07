@@ -142,9 +142,10 @@ class Ui_Dialog_manageFiles(object):
             return
         Dialog_memo = QtWidgets.QDialog()
         text = self.sourcetext[x_file]['file']
-        ui = Ui_Dialog_memo(text)
+        ui = Ui_Dialog_memo(text, fontSize=self.settings['fontSize'])
         ui.setupUi(Dialog_memo, "View file: " + self.sourcetext[x_file]['name'] +" (ID:"+ str(self.sourcetext[x_file]['id'])+") "
                    +self.sourcetext[x_file]['owner'] + ", " + self.sourcetext[x_file]['date'])
+        ui.plainTextEdit.setReadOnly(True)
         Dialog_memo.exec_()
         # update model and database
         fileText = ui.getMemo() ## unicode

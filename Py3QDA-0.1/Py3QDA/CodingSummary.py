@@ -73,6 +73,7 @@ class CodingSummary():
             text += row + "\n"
 
         Dialog_memo = QtWidgets.QDialog()
-        ui = Ui_Dialog_memo(text)
+        ui = Ui_Dialog_memo(text, fontSize=self.settings['fontSize'])
         ui.setupUi(Dialog_memo, "Coding  summary")
+        ui.plainTextEdit.setReadOnly(True)
         Dialog_memo.exec_()

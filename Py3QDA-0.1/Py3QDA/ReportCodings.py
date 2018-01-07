@@ -84,6 +84,8 @@ class Ui_Dialog_reportCodings(object):
         self.settings = settings
         self.codes = []
         self.log = ""
+        self.qfont = QtGui.QFont()
+        self.qfont.setPointSize(self.settings['fontSize'])
 
         #set up default codes list
         cur = self.settings['conn'].cursor()
@@ -510,6 +512,7 @@ class Ui_Dialog_reportCodings(object):
         self.textEdit = QtWidgets.QPlainTextEdit(self.splitter) # added plain and splitter
         self.textEdit.setGeometry(QtCore.QRect(550, 90, 541, 391))
         self.textEdit.setObjectName(_fromUtf8("textEdit"))
+        self.textEdit.setFont(self.qfont)
         self.pushButton_exporthtml = QtWidgets.QPushButton(Dialog_reportCodings)
         self.pushButton_exporthtml.setGeometry(QtCore.QRect(700, 10, 121, 27))
         self.pushButton_exporthtml.setObjectName(_fromUtf8("pushButton_exporthtml"))

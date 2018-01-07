@@ -48,9 +48,13 @@ class Ui_Dialog_memo(QtWidgets.QDialog):
     memo = ""  # the memo text
     filename = None  # for files created in PyQDA or to modify a filename
     Dialog_memo = None
+    fontSize = None
 
-    def __init__(self, memo, parent=None):
+    def __init__(self, memo, parent=None, fontSize=None):
         super(QtWidgets.QDialog, self).__init__(parent)  # use this to overrride accept method
+        self.qfont = QtGui.QFont()
+        if fontSize is not None:
+            self.qfont.setPointSize(fontSize)
         if memo is not None:
             if isinstance(memo, bytes):
                 self.memo = memo.decode("utf8")
@@ -92,6 +96,7 @@ class Ui_Dialog_memo(QtWidgets.QDialog):
         self.plainTextEdit = QtWidgets.QPlainTextEdit(Dialog_memo)
         self.plainTextEdit.setGeometry(QtCore.QRect(10, 20, 621, 421))
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
+        self.plainTextEdit.setFont(self.qfont)
         self.gridLayout.addWidget(self.plainTextEdit, 1, 0, 1, 2)
         if self.memo is not None:
             self.plainTextEdit.setPlainText(self.memo)

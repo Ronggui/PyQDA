@@ -249,13 +249,13 @@ class Ui_Dialog_assignAttributes(object):
         if self.attrType == "Cases":
             case = self.tableWidget.item(x, 0).text()
             Dialog_memo = QtWidgets.QDialog()
-            ui = Ui_Dialog_memo(memo="")
+            ui = Ui_Dialog_memo(memo="", fontSize=self.settings['fontSize'])
             ui.setupUi(Dialog_memo, title="Case profile: case=%s" % case)
             cur = self.settings['conn'].cursor()
             cur.execute("select seltext, source.name, freecode.name from coding join source, freecode on coding.fid=source.id and coding.cid=freecode.id where coding.fid in (select fid from caselinkage where caseid in (select id from cases where name=?)) order by cid, fid", (case,))
             result = cur.fetchall()
             for seltext, filename, codename in result:
-                ui.plainTextEdit.appendHtml("<h2><font color='red'>Code: %s; File: %s</font></h2>" % (codename, filename))
+                ui.plainTextEdit.appendHtml("<h3><font color='red'>Code: %s; File: %s</font></h3>" % (codename, filename))
                 ui.plainTextEdit.appendHtml(seltext + "<br><br>")
             ui.plainTextEdit.setReadOnly(True)
             Dialog_memo.exec_()

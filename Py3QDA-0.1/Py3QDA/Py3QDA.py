@@ -82,7 +82,7 @@ class MainView(QtWidgets.QMainWindow):
     logWidget = None
 
     settings = {"conn": None, "directory": "", "projectName": "", "showIDs":False,
-    "codername": "default", "codertable": "coding", "fontSize": 12, "size": ""}
+    "codername": "default", "codertable": "coding", "fontSize": 14, "size": ""}
     project = {"databaseversion": "", "date": "", "dateM": "", "memo": "",
     "about": "", "imagDir": ""}
 

@@ -63,7 +63,6 @@ class Ui_Dialog_codes(object):
 
     settings = None
     freecode ={}
-    #freecode = []
     codeColors = CodeColors()
     filenames = []
     filename = {}  # contains filename and file id returned from SelectFile
@@ -478,7 +477,7 @@ class Ui_Dialog_codes(object):
         else:
             selected_code = self.tableWidget_codes.item(x, 0).text()
             Dialog_memo = QtWidgets.QDialog()
-            ui = Ui_Dialog_memo(memo="")
+            ui = Ui_Dialog_memo(memo="", fontSize=self.settings['fontSize'])
             ui.setupUi(Dialog_memo, title="Codings of %s" % selected_code)
             cur = self.settings['conn'].cursor()
             cur.execute(
@@ -487,7 +486,7 @@ class Ui_Dialog_codes(object):
             result = cur.fetchall()
             for seltext, filename, codename in result:
                 ui.plainTextEdit.appendHtml(
-                    "<h2><font color='red'>Code: %s; File: %s</font></h2>" % (codename, filename))
+                    "<h3><font color='red'>Code: %s; File: %s</font></h3>" % (codename, filename))
                 ui.plainTextEdit.appendHtml(seltext + "<br><br>")
             ui.plainTextEdit.setReadOnly(True)
             Dialog_memo.exec_()
