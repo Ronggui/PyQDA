@@ -37,3 +37,5 @@ Few new features, such as case profile matrix, have been added to Py3QDA.
    ```
    Then you can see the main screen of the program.
 
+   ![Py3QDA](Py3QDA.png)
+
