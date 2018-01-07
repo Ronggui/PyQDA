@@ -29,11 +29,11 @@ Few new features, such as case profile matrix, have been added to Py3QDA.
 2. Launch terminal or cmd and run the following command
 
    ```Python
-   python Py3QDA/Py3QDA.py3
+   python Py3QDA/Py3QDA.py
 
    # or
 
-   python Path/of/Py3QDA/Py3QDA.py3
+   python Path/of/Py3QDA/Py3QDA.py
    ```
    Then you can see the main screen of the program.
 
