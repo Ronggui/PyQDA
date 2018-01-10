@@ -704,7 +704,7 @@ class Ui_Dialog_codes(object):
 
         #self.tableWidget_codes = QtWidgets.QTableWidget(Dialog_codes)
         self.tableWidget_codes = QtWidgets.QTableWidget(self.splitter) # ADDED splitter
-        self.tableWidget_codes.setGeometry(QtCore.QRect(10, 90, 461, h - 100))
+        self.tableWidget_codes.setGeometry(QtCore.QRect(10, 90, 331, h - 100))
         self.tableWidget_codes.setObjectName(_fromUtf8("tableWidget_codes"))
         self.tableWidget_codes.setColumnCount(0)
         self.tableWidget_codes.setRowCount(0)
@@ -717,7 +717,7 @@ class Ui_Dialog_codes(object):
         self.textEd = QtWidgets.QPlainTextEdit(self.splitter)
         #self.textEd_area.setWidget(self.textEd)
         self.textEd.setReadOnly(True)
-        self.textEd.setGeometry(QtCore.QRect(500, 90, w - 550, h - 200))
+        self.textEd.setGeometry(QtCore.QRect(500, 90, 841, h - 200))
         self.textEd.setObjectName(_fromUtf8("textEd"))
         self.textEd.setPlainText("")
         self.textEd.setAutoFillBackground(True)

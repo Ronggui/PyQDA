@@ -494,7 +494,7 @@ class Ui_Dialog_reportCodings(object):
 
         #END ADDIN
         self.tableWidget = QtWidgets.QTableWidget(self.splitter) # ADDED splitter
-        self.tableWidget.setGeometry(QtCore.QRect(10, 90, 531, 391))
+        self.tableWidget.setGeometry(QtCore.QRect(10, 90, 331, 391))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -510,7 +510,7 @@ class Ui_Dialog_reportCodings(object):
         self.pushButton_sortDirection.setGeometry(QtCore.QRect(20, 40, 141, 27))
         self.pushButton_sortDirection.setObjectName(_fromUtf8("pushButton_sortDirection"))
         self.textEdit = QtWidgets.QPlainTextEdit(self.splitter) # added plain and splitter
-        self.textEdit.setGeometry(QtCore.QRect(550, 90, 541, 391))
+        self.textEdit.setGeometry(QtCore.QRect(550, 90, 841, 391))
         self.textEdit.setObjectName(_fromUtf8("textEdit"))
         self.textEdit.setFont(self.qfont)
         self.pushButton_exporthtml = QtWidgets.QPushButton(Dialog_reportCodings)
