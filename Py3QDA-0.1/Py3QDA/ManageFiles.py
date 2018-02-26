@@ -60,7 +60,8 @@ class Ui_Dialog_manageFiles(object):
     DATE_COLUMN = 2
     NAME_COLUMN = 0
     ID_COLUMN = 3
-    headerLabels = ["Name","Memo","Date","Id"]
+    ROW_ID_COLUMN = 4
+    headerLabels = ["Name","Memo","Date","Id", "rowid"]
     log = ""
 
     def __init__(self, settings):
@@ -69,11 +70,10 @@ class Ui_Dialog_manageFiles(object):
             self.sourcetext = {}
             self.settings = settings
             cur = self.settings['conn'].cursor()
-            cur.execute("select name, id, file, memo, owner, date, dateM, status from source order by name")
+            cur.execute("select name, id, file, memo, owner, date, dateM, status, rowid from source order by name")
             result = cur.fetchall()
             for row in result:
-                #self.sourcetext.append({'name':row[0], 'id':row[1], 'file':row[2], 'memo':row[3], 'owner':row[4], 'date':row[5], 'dateM':row[6], 'status':row[7]})
-                self.sourcetext[row[0]] = {'name': row[0], 'id': row[1], 'file': row[2], 'memo': row[3], 'owner': row[4], 'date': row[5], 'dateM': row[6], 'status': row[7]}
+                self.sourcetext[str(row[8])] = {'name': row[0], 'id': row[1], 'file': row[2], 'memo': row[3], 'owner': row[4], 'date': row[5], 'dateM': row[6], 'status': row[7], 'rowid': row[8]}
 
     def cellSelected(self):
         """ When the table widget memo cell is selected display the memo.
@@ -84,7 +84,7 @@ class Ui_Dialog_manageFiles(object):
         y = self.tableWidget_files.currentColumn()
 
         if y == self.MEMO_COLUMN:
-            x_file = self.tableWidget_files.item(x, self.NAME_COLUMN).text()
+            x_file = self.tableWidget_files.item(x, self.ROW_ID_COLUMN).text()
             Dialog_memo = QtWidgets.QDialog()
             ui = Ui_Dialog_memo(self.sourcetext[x_file]['memo'])
             ui.setupUi(Dialog_memo, "File memo " + self.sourcetext[x_file]['name'])
@@ -96,10 +96,9 @@ class Ui_Dialog_manageFiles(object):
                 self.tableWidget_files.setItem(x, self.MEMO_COLUMN, QtWidgets.QTableWidgetItem("Yes"))
 
             # update sourcetext list and database
-            #self.sourcetext[x]['memo'] = memo.encode('raw_unicode_escape')
             self.sourcetext[x_file]['memo'] = memo
             cur = self.settings['conn'].cursor()
-            cur.execute("update source set memo=? where id=?", (self.sourcetext[x_file]['memo'], self.sourcetext[x_file]['id']))
+            cur.execute("update source set memo=? where rowid=?", (self.sourcetext[x_file]['memo'], x_file) )
             self.settings['conn'].commit()
 
     def cellModified(self):
@@ -107,7 +106,10 @@ class Ui_Dialog_manageFiles(object):
 
         x = self.tableWidget_files.currentRow()
         y = self.tableWidget_files.currentColumn()
-
+        try:
+            x_file = self.tableWidget_files.item(x, self.ROW_ID_COLUMN).text()
+        except AttributeError:
+            pass
         if y == self.NAME_COLUMN:
             newText = str(self.tableWidget_files.item(x, y).text()).strip()
 
@@ -115,29 +117,25 @@ class Ui_Dialog_manageFiles(object):
             update = True
             if newText == "":
                 update = False
-            for c in self.sourcetext:
-                #if c['name'] == newText:
-                if c == newText:
+            for k, val in self.sourcetext.items():
+                if val['name'] == newText:
                     update = False
             if update:
                 nrow = self.tableWidget_files.rowCount()
-                all_files = [self.tableWidget_files.item(_, y).text() for _ in range(nrow)]
-                file_changed = set(self.sourcetext.keys()) - set(all_files)
-                file_changed = list(file_changed)[0]
-                #update source list and database
-                self.sourcetext[file_changed]['name'] = newText
                 cur = self.settings['conn'].cursor()
-                cur.execute("update source set name=? where id=?", (newText, self.sourcetext[file_changed]['id']))
+                cur.execute("update source set name=? where rowid=?", (newText, x_file))
                 self.settings['conn'].commit()
+                #update source list and database
+                self.sourcetext[x_file]['name'] = newText
             else:  #put the original text in the cell
-                self.tableWidget_files.item(x, y).setText(self.sourcetext[newText]['name'])
+                self.tableWidget_files.item(x, y).setText(self.sourcetext[x_file]['name'])
 
     def viewFile(self):
         """ View and edit the file contents """
 
         x = self.tableWidget_files.currentRow()
         if x != -1:
-            x_file = self.tableWidget_files.item(x, 0).text()
+            x_file = self.tableWidget_files.item(x, self.ROW_ID_COLUMN).text()
         else:
             return
         Dialog_memo = QtWidgets.QDialog()
@@ -154,7 +152,7 @@ class Ui_Dialog_manageFiles(object):
             # CHECK NOT YET IMPLEMENTED
             self.sourcetext[x_file]['file'] = fileText
             cur = self.settings['conn'].cursor()
-            cur.execute("update source set file=? where id=?", (self.sourcetext[x_file]['file'], self.sourcetext[x_file]['id']))
+            cur.execute("update source set file=? where rowid=?", (self.sourcetext[x_file]['file'], x_file))
             self.settings['conn'].commit()
         else:
             pass
@@ -181,9 +179,13 @@ class Ui_Dialog_manageFiles(object):
         while any(self.sourcetext[d]['id'] == fileId for d in self.sourcetext):
             fileId = fileId + 1
 
-        # update database
-        newFile = {'name':fileName, 'id':fileId, 'file': fileText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1}
         cur = self.settings['conn'].cursor()
+        cur.execute("select max(rowid) from source")
+        next_rowid = str(int(cur.fetchone()[0]) + 1)
+
+        # update database
+        newFile = {'name':fileName, 'id':fileId, 'file': fileText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1, 'rowid': next_rowid}
+
         cur.execute("insert into source(name,id,file,memo,owner,date,dateM,status) values(?,?,?,?,?,?,?,?)",
                     (newFile['name'],newFile['id'],newFile['file'],newFile['memo'],newFile['owner'],newFile['date'],newFile['dateM'],newFile['status']))
         self.settings['conn'].commit()
@@ -193,7 +195,8 @@ class Ui_Dialog_manageFiles(object):
         for r in self.sourcetext:
             self.tableWidget_files.removeRow(0)
 
-        self.sourcetext[fileName] = newFile
+        self.sourcetext[next_rowid] = newFile
+
         for row, k in enumerate(self.sourcetext):
             itm = self.sourcetext[k]
             self.tableWidget_files.insertRow(row)
@@ -205,6 +208,9 @@ class Ui_Dialog_manageFiles(object):
                 self.tableWidget_files.setItem(row, self.MEMO_COLUMN, QtWidgets.QTableWidgetItem("Yes"))
             item = QtWidgets.QTableWidgetItem(str(itm['id']))
             self.tableWidget_files.setItem(row, self.ID_COLUMN, item)
+            item = QtWidgets.QTableWidgetItem(str(itm['rowid']))
+            self.tableWidget_files.setItem(row, self.ROW_ID_COLUMN, item)
+
         self.tableWidget_files.resizeColumnsToContents()
         self.tableWidget_files.resizeRowsToContents()
 
@@ -304,7 +310,7 @@ class Ui_Dialog_manageFiles(object):
                 QtWidgets.QMessageBox.warning(None, 'Warning', str(importErrors) + " lines not imported", QtWidgets.QMessageBox.Ok)
 
         # Final checks: check for duplicated filename and update model, widget and database
-        if any(d == fileName for d in self.sourcetext):
+        if any(val['name'] == fileName for val in self.sourcetext.values()):
             QtWidgets.QMessageBox.warning(None, 'Duplicate file', "Duplicate filename.\nFile not imported", QtWidgets.QMessageBox.Ok)
             return
         # increment fileId until a spare id is available
@@ -348,7 +354,12 @@ class Ui_Dialog_manageFiles(object):
         # clear and refill table widget
         for r in self.sourcetext:
             self.tableWidget_files.removeRow(0)
-        self.sourcetext[fileName] = newFile
+
+        cur.execute("select max(rowid) from source")
+        new_row_id = str(cur.fetchone()[0])
+        newFile['rowid'] = new_row_id
+
+        self.sourcetext[new_row_id] = newFile
         self.fillTableWidget_files()
 
     def exportFile(self):
@@ -358,7 +369,7 @@ class Ui_Dialog_manageFiles(object):
         if x == -1:
             return
         else:
-            x_file = self.tableWidget_files.item(x, self.NAME_COLUMN).text()
+            x_file = self.tableWidget_files.item(x, self.ROW_ID_COLUMN).text()
         fileName = self.sourcetext[x_file]['name']
         if len(fileName) > 5 and (fileName[-5:] == ".html" or fileName[-5:] == ".docx"):
             fileName = fileName[0:len(fileName) - 5]
@@ -385,7 +396,7 @@ class Ui_Dialog_manageFiles(object):
         if x == -1:
             return
         else:
-            x_file = self.tableWidget_files.item(x, 0).text()
+            x_file = self.tableWidget_files.item(x, self.ROW_ID_COLUMN).text()
         fileId = self.sourcetext[x_file]['id']
         Dialog_confirmDelete = QtWidgets.QDialog()
         ui = Ui_Dialog_confirmDelete(self.sourcetext[x_file]['name'])
@@ -428,9 +439,12 @@ class Ui_Dialog_manageFiles(object):
             if memoitem != None and memoitem != "":
                 self.tableWidget_files.setItem(row, self.MEMO_COLUMN, QtWidgets.QTableWidgetItem("Yes"))
             self.tableWidget_files.setItem(row, self.ID_COLUMN, QtWidgets.QTableWidgetItem(details['id']))
+            rowid_item = QtWidgets.QTableWidgetItem(str(details['rowid']))
+            self.tableWidget_files.setItem(row, self.ROW_ID_COLUMN, rowid_item)
         self.tableWidget_files.resizeColumnsToContents()
         self.tableWidget_files.resizeRowsToContents()
         self.tableWidget_files.hideColumn(self.ID_COLUMN)
+        self.tableWidget_files.hideColumn(self.ROW_ID_COLUMN)
         self.tableWidget_files.verticalHeader().setVisible(False)
 
     def getLog(self):
