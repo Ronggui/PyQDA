@@ -59,7 +59,8 @@ class Ui_Dialog_codes(object):
     COLOR_COLUMN = 1
     MEMO_COLUMN = 2
     ID_COLUMN = 3
-    headerLabels = ["Code", "Color", "Memo", "id"]
+    ROW_ID_COLUMN = 4
+    headerLabels = ["Code", "Color", "Memo", "id", "rowid"]
 
     settings = None
     freecode ={}
@@ -83,13 +84,12 @@ class Ui_Dialog_codes(object):
         self.qfont.setPointSize(self.settings['fontSize'])
 
         cur = self.settings['conn'].cursor()
-        cur.execute("select name, memo, owner, date, dateM, id, status, color from freecode")
+        cur.execute("select name, memo, owner, date, dateM, id, status, color, rowid from freecode")
         result = cur.fetchall()
         for row in result:
-            #self.freecode.append({'name': row[0], 'memo': row[1], 'owner': row[2],
-            #'date': row[3], 'dateM':row[4], 'id': row[5], 'status': row[6], 'color': row[7]})
-            self.freecode[row[0]] = {'name': row[0], 'memo': row[1], 'owner': row[2],
-            'date': row[3], 'dateM':row[4], 'id': row[5], 'status': row[6], 'color': row[7]}
+            self.freecode[str(row[8])] = {'name': row[0], 'memo': row[1], 'owner': row[2],
+            'date': row[3], 'dateM':row[4], 'id': row[5], 'status': row[6], 'color': row[7], 'rowid': row[8]}
+            # use rowid as key
 
         cur.execute("select id, name, status from source")
         result = cur.fetchall()
@@ -107,11 +107,9 @@ class Ui_Dialog_codes(object):
 
         x = self.tableWidget_codes.currentRow()
         y = self.tableWidget_codes.currentColumn()
-        x_code = self.tableWidget_codes.item(x, 0).text()
-        #print(self.freecode)
+        x_code = self.tableWidget_codes.item(x, self.ROW_ID_COLUMN).text()
 
         if y == self.COLOR_COLUMN:
-            #print(self.freecode[x_code]['color'])
             Dialog_colorselect = QtWidgets.QDialog()
             ui = Ui_Dialog_colorselect(self.freecode[x_code]['color'])
             ui.setupUi(Dialog_colorselect)
@@ -156,29 +154,30 @@ class Ui_Dialog_codes(object):
 
         x = self.tableWidget_codes.currentRow()
         y = self.tableWidget_codes.currentColumn()
+        try:
+            x_code = self.tableWidget_codes.item(x, self.ROW_ID_COLUMN).text()
+        except AttributeError:
+            pass
+            # print("TableWidget changes by other actions")
         if y == self.NAME_COLUMN:
             newCodeText = self.tableWidget_codes.item(x, y).text()
             # check that no other code has this text and this is is not empty
             update = True
             if newCodeText == "":
                 update = False
-            for c in self.freecode:
-                if c == newCodeText:
+            for k, val in self.freecode.items():
+                if val['name'] == newCodeText:
                     update = False
             if update:
                 #update freecode list and database
                 nrow = self.tableWidget_codes.rowCount()
-                all_codes = [self.tableWidget_codes.item(_, y).text() for _ in range(nrow)]
-                code_changed = set(self.freecode.keys()) - set(all_codes)
-                code_changed = list(code_changed)[0]
-                self.freecode[code_changed]['name'] = newCodeText
                 cur = self.settings['conn'].cursor()
-                cur.execute("update freecode set name=? where id=?", (newCodeText, self.freecode[code_changed]['id']))
+                cur.execute("update freecode set name=? where rowid=?", (newCodeText, x_code))
                 self.settings['conn'].commit()
                 # update filter for tooltip
                 self.eventFilter.setCodes(self.coding, self.freecode)
             else:  #put the original text in the cell
-                self.tableWidget_codes.item(x, y).setText(self.freecode[newCodeText]['name'])
+                self.tableWidget_codes.item(x, y).setText(self.freecode[x_code]['name'])
 
     def addCode(self):
         """ open addItem dialog to get new code text.
@@ -196,11 +195,13 @@ class Ui_Dialog_codes(object):
             newid = 1
             #for fc in self.freecode:
             for fc in self.freecode.values():
-                if fc['id'] >= newid: newid = fc['id']+1
-            item = {'name':newCodeText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':""}
-            #self.freecode.append(item)
-            self.freecode[newCodeText] = item
+                if fc['id'] >= newid:
+                    newid = fc['id']+1
             cur = self.settings['conn'].cursor()
+            cur.execute("select max(rowid) from freecode")
+            next_rowid = int(cur.fetchone()[0]) + 1
+            item = {'name':newCodeText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':"", "rowid": next_rowid}
+            self.freecode[str(next_rowid)] = item
             cur.execute("insert into freecode (name,memo,owner,date,dateM,id,status,color) values(?,?,?,?,?,?,?,?)"
                         ,(item['name'],item['memo'],item['owner'],item['date'],item['dateM'],item['id'],item['status'],item['color']))
             self.settings['conn'].commit()
@@ -222,8 +223,7 @@ class Ui_Dialog_codes(object):
             tableRowsToDelete.append(int(itemWidget.row()))
             idsToDelete.append(int(self.tableWidget_codes.item(itemWidget.row(), self.ID_COLUMN).text()))
             codeNamesToDelete = codeNamesToDelete+"\n" + self.tableWidget_codes.item(itemWidget.row(), self.NAME_COLUMN).text()
-            #codeNamesToDelete = codeNamesToDelete.decode("utf-8")
-            #print("X:"+ str(itemWidget.row()) + "  y:"+str(itemWidget.column()) +"  "+itemWidget.text() +"  id:"+str(self.tableWidget_codes.item(itemWidget.row(),3).text()))
+
         tableRowsToDelete.sort(reverse=True)
 
         if len(codeNamesToDelete) == 0:
@@ -330,11 +330,9 @@ class Ui_Dialog_codes(object):
         for item in self.coding:
             cursor.setPosition(int(item['selfirst']), QtGui.QTextCursor.MoveAnchor)
             cursor.setPosition(int(item['selend']), QtGui.QTextCursor.KeepAnchor)
-            id2name = {self.freecode[k]['id']:self.freecode[k] for k in self.freecode}
-            #freecodeindex = list(map(itemgetter('name'), self.freecode)).index(item['cid'])
+            id2name = {self.freecode[k]['id']: self.freecode[k] for k in self.freecode}
             # map return an iter in py3
             colors = CodeColors()
-            #colorhex = colors.getHexFromName(self.freecode[freecodeindex]['color'])
             colorhex = colors.getHexFromName(id2name[item['cid']]['color'])
             if colorhex == "":
                 colorhex = "#CCCCCC"
@@ -373,7 +371,7 @@ class Ui_Dialog_codes(object):
             QtWidgets.QMessageBox.warning(None, 'Warning', "No code was selected", QtWidgets.QMessageBox.Ok)
             return
 
-        row_code = self.tableWidget_codes.item(row, 0).text()
+        row_code = self.tableWidget_codes.item(row, self.ROW_ID_COLUMN).text()
         selectedText = self.textEd.textCursor().selectedText()
         selstart = self.textEd.textCursor().selectionStart()
         selend = self.textEd.textCursor().selectionEnd()
@@ -548,7 +546,7 @@ class Ui_Dialog_codes(object):
         """ Autocode text in one file or all files with selected code """
 
         row = self.tableWidget_codes.currentRow()
-        row_code = self.tableWidget_codes.item(row, 0).text()
+        row_code = self.tableWidget_codes.item(row, self.ROW_ID_COLUMN).text()
         if row == -1:
             QtWidgets.QMessageBox.warning(None, 'Warning',"No code was selected", QtWidgets.QMessageBox.Ok)
             return
@@ -648,12 +646,14 @@ class Ui_Dialog_codes(object):
             if cid is None:
                 cid = ""
             self.tableWidget_codes.setItem(row, self.ID_COLUMN, QtWidgets.QTableWidgetItem(str(cid)))
+            self.tableWidget_codes.setItem(row, self.ROW_ID_COLUMN, QtWidgets.QTableWidgetItem(str(code['rowid'])))
 
         self.tableWidget_codes.verticalHeader().setVisible(False)
         self.tableWidget_codes.resizeColumnsToContents()
         self.tableWidget_codes.resizeRowsToContents()
         if not self.settings['showIDs']:
             self.tableWidget_codes.hideColumn(self.ID_COLUMN)
+        self.tableWidget_codes.hideColumn(self.ROW_ID_COLUMN)
     #END ADDIN
 
     def setupUi(self, Dialog_codes, settings):

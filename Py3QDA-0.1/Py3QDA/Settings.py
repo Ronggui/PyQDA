@@ -59,6 +59,11 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
         else:
             self.settings['codertable'] = "coding2"
         self.thisDialog.accept()
+    
+    def getFont(self):
+        font, ok = QtWidgets.QFontDialog.getFont()
+        if ok:
+            print(font)
 
     def setupUi(self, Dialog_settings):
         Dialog_settings.setObjectName(_fromUtf8("Dialog_settings"))
@@ -97,7 +102,11 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
         self.checkBox = QtWidgets.QCheckBox(Dialog_settings)
         self.checkBox.setGeometry(QtCore.QRect(30, 93, 97, 22))
         self.checkBox.setObjectName(_fromUtf8("checkBox"))
-
+        self.qfontButton = QtWidgets.QPushButton(Dialog_settings)
+        self.qfontButton.setGeometry(QtCore.QRect(30, 150, 113, 27))
+        self.qfontButton.setObjectName("qfontButton")
+        self.qfontButton.clicked.connect(self.getFont)
+        
         #ADDIN
         self.lineEdit_coderName.setText(self.settings['codername'])
         '''
@@ -115,7 +124,7 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
         else:
             self.checkBox.setChecked(False)
         #END ADDIN
-
+        
         self.retranslateUi(Dialog_settings)
         self.buttonBox.accepted.connect(self.accept) #changed
         self.buttonBox.rejected.connect(Dialog_settings.reject)
@@ -129,6 +138,7 @@ class Ui_Dialog_settings(QtWidgets.QDialog):#add in dialog object
         self.radioButton_coder2.setText(QtWidgets.QApplication.translate("Dialog_settings", "Coder 2", None, 1))
         self.label.setText(QtWidgets.QApplication.translate("Dialog_settings", "Font Size", None, 1))
         self.checkBox.setText(QtWidgets.QApplication.translate("Dialog_settings", "Show IDs", None))
+        self.qfontButton.setText(QtWidgets.QApplication.translate("Dialog_settings", "Set Font", None, 1))
 
 
 if __name__ == "__main__":
