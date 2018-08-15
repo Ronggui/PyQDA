@@ -29,13 +29,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 #ADDIN
 import datetime
-from CodeColors import CodeColors
-from ColorSelector import Ui_Dialog_colorselect
-from Memo import Ui_Dialog_memo
-from AddItem import Ui_Dialog_addItem
-from ConfirmDelete import Ui_Dialog_confirmDelete
-from SelectFile import Ui_Dialog_selectfile
-from ViewCodeFrequencies import Ui_Dialog_vcf
+from .CodeColors import CodeColors
+from .ColorSelector import Ui_Dialog_colorselect
+from .Memo import Ui_Dialog_memo
+from .AddItem import Ui_Dialog_addItem
+from .ConfirmDelete import Ui_Dialog_confirmDelete
+from .SelectFile import Ui_Dialog_selectfile
+from .ViewCodeFrequencies import Ui_Dialog_vcf
 
 # requires python-igraph (0.6.5)
 try:

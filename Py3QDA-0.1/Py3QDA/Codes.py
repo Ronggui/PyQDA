@@ -31,12 +31,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.Qt import QHelpEvent
 import datetime
 from operator import itemgetter
-from CodeColors import CodeColors
-from ColorSelector import Ui_Dialog_colorselect
-from Memo import Ui_Dialog_memo
-from AddItem import Ui_Dialog_addItem
-from ConfirmDelete import Ui_Dialog_confirmDelete
-from SelectFile import Ui_Dialog_selectfile
+from .CodeColors import CodeColors
+from .ColorSelector import Ui_Dialog_colorselect
+from .Memo import Ui_Dialog_memo
+from .AddItem import Ui_Dialog_addItem
+from .ConfirmDelete import Ui_Dialog_confirmDelete
+from .SelectFile import Ui_Dialog_selectfile
 import re
 
 #from FixUnicode import FixUnicode

@@ -26,7 +26,7 @@ https://github.com/ccbogel/PyQDA
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from CodeColors import CodeColors
+from .CodeColors import CodeColors
 import re
 
 try:

@@ -27,8 +27,8 @@ https://github.com/ccbogel/PyQDA
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 #ADDIN
-from Memo import Ui_Dialog_memo
-from ConfirmDelete import Ui_Dialog_confirmDelete
+from .Memo import Ui_Dialog_memo
+from .ConfirmDelete import Ui_Dialog_confirmDelete
 import datetime
 import os
 #END ADDIN

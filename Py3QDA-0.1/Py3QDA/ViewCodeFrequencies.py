@@ -26,7 +26,7 @@ https://github.com/ccbogel/PyQDA
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Memo import Ui_Dialog_memo
+from .Memo import Ui_Dialog_memo
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8

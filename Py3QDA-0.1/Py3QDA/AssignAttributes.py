@@ -29,7 +29,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import datetime # ADDIN
 import os
 import csv
-from Memo import Ui_Dialog_memo
+from .Memo import Ui_Dialog_memo
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8

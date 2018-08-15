@@ -29,12 +29,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 #ADDIN
 import datetime
 import re
-from AddItem import Ui_Dialog_addItem
-from ConfirmDelete import Ui_Dialog_confirmDelete
-from Memo import Ui_Dialog_memo
-from SelectFile import Ui_Dialog_selectfile
-from AutoAssignCase import Ui_Dialog_autoassign
-from ViewCodeFrequencies import Ui_Dialog_vcf
+from .AddItem import Ui_Dialog_addItem
+from .ConfirmDelete import Ui_Dialog_confirmDelete
+from .Memo import Ui_Dialog_memo
+from .SelectFile import Ui_Dialog_selectfile
+from .AutoAssignCase import Ui_Dialog_autoassign
+from .ViewCodeFrequencies import Ui_Dialog_vcf
 #END ADDIN
 
 try:

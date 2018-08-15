@@ -31,10 +31,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 #import sqlite3
 import datetime
 #from operator import itemgetter
-from Memo import Ui_Dialog_memo
-from AddItem import Ui_Dialog_addItem
-from ConfirmDelete import Ui_Dialog_confirmDelete
-from SelectFile import Ui_Dialog_selectfile
+from .Memo import Ui_Dialog_memo
+from .AddItem import Ui_Dialog_addItem
+from .ConfirmDelete import Ui_Dialog_confirmDelete
+from .SelectFile import Ui_Dialog_selectfile
 #END
 
 try:

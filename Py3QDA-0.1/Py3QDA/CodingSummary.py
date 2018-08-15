@@ -25,7 +25,7 @@ Author: Colin Curtain (ccbogel)
 https://github.com/ccbogel/PyQDA
 '''
 
-from Memo import Ui_Dialog_memo
+from .Memo import Ui_Dialog_memo
 from PyQt5 import QtWidgets
 import re
 

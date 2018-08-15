@@ -27,14 +27,14 @@ https://github.com/ccbogel/PyQDA
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 #ADDIN
-from Memo import Ui_Dialog_memo
-from ConfirmDelete import Ui_Dialog_confirmDelete
+from .Memo import Ui_Dialog_memo
+from .ConfirmDelete import Ui_Dialog_confirmDelete
 import datetime
 #from HTMLToText import html_to_text
 import os
 
 #for file extraction
-from docx import opendocx, getdocumenttext
+from .docx import opendocx, getdocumenttext
 import zipfile
 import xml.etree.ElementTree
 try:

@@ -24,6 +24,11 @@ THE SOFTWARE.
 
 Author: Colin Curtain (ccbogel)
 https://github.com/ccbogel/PyQDA
+
+
+Copyright (c) 2017-2018 Rongui Huang
+
+Port to Python 3 and PyQt5
 '''
 
 """
@@ -54,23 +59,23 @@ import sqlite3
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
-from Codes import Ui_Dialog_codes
-from Categories import Ui_Dialog_cats
-from FileCategories import Ui_Dialog_fcats
-from Settings import Ui_Dialog_settings
-from ManageFiles import Ui_Dialog_manageFiles
-from ManageJournals import Ui_Dialog_manageJournals
-from Cases import Ui_Dialog_cases
-from Memo import Ui_Dialog_memo
-from Codebook import Ui_Dialog_codebook
-from Attributes import Ui_Dialog_Attributes
-from AssignAttributes import Ui_Dialog_assignAttributes
-from ImportAttributes import ImportAttributes
-from Information import Ui_Dialog_information
-from ReportCodings import Ui_Dialog_reportCodings
-from SQL import Ui_Dialog_sql
-from CodingSummary import CodingSummary
-from ViewCodeFrequencies import Ui_Dialog_vcf
+from .Codes import Ui_Dialog_codes
+from .Categories import Ui_Dialog_cats
+from .FileCategories import Ui_Dialog_fcats
+from .Settings import Ui_Dialog_settings
+from .ManageFiles import Ui_Dialog_manageFiles
+from .ManageJournals import Ui_Dialog_manageJournals
+from .Cases import Ui_Dialog_cases
+from .Memo import Ui_Dialog_memo
+from .Codebook import Ui_Dialog_codebook
+from .Attributes import Ui_Dialog_Attributes
+from .AssignAttributes import Ui_Dialog_assignAttributes
+from .ImportAttributes import ImportAttributes
+from .Information import Ui_Dialog_information
+from .ReportCodings import Ui_Dialog_reportCodings
+from .SQL import Ui_Dialog_sql
+from .CodingSummary import CodingSummary
+from .ViewCodeFrequencies import Ui_Dialog_vcf
 
 class MainView(QtWidgets.QMainWindow):
     """

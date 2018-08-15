@@ -26,14 +26,17 @@ Few new features, such as case profile matrix, have been added to Py3QDA.
 
    Another way is to install [WinPython](http://winpython.github.io/) (The one with Python 3.6+ and QT5)
 
-2. Launch terminal or cmd and run the following command
+2. Download [PyQDA](https://github.com/Ronggui/PyQDA/archive/master.zip) and unizp it.
+3. Launch terminal or cmd, and change the working directory to path/of/PyQDA/Py3QDA-0.1, run the following command
 
-   ```Python
-   python Py3QDA/Py3QDA.py
+   ```bash
+   $python setup.py install
+   ```
 
-   # or
+3. Launch Py3QDA by running the following command
 
-   python Path/of/Py3QDA/Py3QDA.py
+   ```bash
+   $py3qda
    ```
    Then you can see the main screen of the program.
 

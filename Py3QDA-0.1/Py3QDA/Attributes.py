@@ -29,10 +29,10 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 
 #ADDIN
 import datetime
-from AddItem import Ui_Dialog_addItem
-from ConfirmDelete import Ui_Dialog_confirmDelete
-from AttributeType import Ui_Dialog_attrType
-from Memo import Ui_Dialog_memo
+from .AddItem import Ui_Dialog_addItem
+from .ConfirmDelete import Ui_Dialog_confirmDelete
+from .AttributeType import Ui_Dialog_attrType
+from .Memo import Ui_Dialog_memo
 #END ADDIN
 
 try:

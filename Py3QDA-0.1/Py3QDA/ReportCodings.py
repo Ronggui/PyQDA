@@ -26,8 +26,8 @@ https://github.com/ccbogel/PyQDA
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from CodeColors import CodeColors
-from SelectFile import Ui_Dialog_selectfile
+from .CodeColors import CodeColors
+from .SelectFile import Ui_Dialog_selectfile
 import os
 
 try:
