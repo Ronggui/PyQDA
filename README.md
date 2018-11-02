@@ -22,7 +22,7 @@ Few new features, such as case profile matrix, have been added to Py3QDA.
 
 1. Install Python 3.6+ and PyQt5 module
 
-   The recommended way is to install [Anaconda (Python 3.6 version)](https://www.anaconda.com/download)
+   The recommended way is to install [Anaconda (Python 3.6 version)](https://www.anaconda.com/download), for Chinese users can download it from the [mirror](https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/) of Tsinghua University.
 
    Another way is to install [WinPython](http://winpython.github.io/) (The one with Python 3.6+ and QT5)
 
