@@ -199,7 +199,8 @@ class Ui_Dialog_codes(object):
                     newid = fc['id']+1
             cur = self.settings['conn'].cursor()
             cur.execute("select max(rowid) from freecode")
-            next_rowid = int(cur.fetchone()[0]) + 1
+            current_rowid, = cur.fetchone()  # unpack a tuple
+            next_rowid = 1 if current_rowid is None else int(current_rowid + 1)
             item = {'name':newCodeText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'id':newid, 'status':1, 'color':"", "rowid": next_rowid}
             self.freecode[str(next_rowid)] = item
             cur.execute("insert into freecode (name,memo,owner,date,dateM,id,status,color) values(?,?,?,?,?,?,?,?)"
