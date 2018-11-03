@@ -28,7 +28,7 @@ Few new features, such as case profile matrix, have been added to Py3QDA.
 
 2. Download [PyQDA](https://github.com/Ronggui/PyQDA/archive/master.zip) and unizp it.
 
-3. Launch terminal (for Mac) or cmd (for Windows), and change the working directory to path/of/PyQDA/Py3QDA-0.1 (say ```$cd ~/Downlods/PyQDA-master/Py3QDA-0.1``` if a mac user download it to the Downloads directory), run the following command
+3. Launch terminal (for Mac) or cmd (for Windows), and change the working directory to path/of/PyQDA/Py3QDA-0.1 (say ```$cd ~/Downloads/PyQDA-master/Py3QDA-0.1``` if a mac user download it to the Downloads directory), run the following command
 
    ```bash
    $python setup.py install
