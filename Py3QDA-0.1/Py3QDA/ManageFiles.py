@@ -181,7 +181,8 @@ class Ui_Dialog_manageFiles(object):
 
         cur = self.settings['conn'].cursor()
         cur.execute("select max(rowid) from source")
-        next_rowid = str(int(cur.fetchone()[0]) + 1)
+        current_rowid, = cur.fetchone()  # unpack a tuple
+        next_rowid = 1 if current_rowid is None else int(current_rowid + 1)
 
         # update database
         newFile = {'name':fileName, 'id':fileId, 'file': fileText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1, 'rowid': next_rowid}

@@ -23,11 +23,13 @@ THE SOFTWARE.
 
 Author: Colin Curtain (ccbogel)
 https://github.com/ccbogel/PyQDA
+
+
+Copyright (c) 2017-2018 Ronggui Huang
+https://github.com/ronggui/PyQDA
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
-#ADDIN
 from PyQt5.Qt import QHelpEvent
 import datetime
 from operator import itemgetter
@@ -39,8 +41,6 @@ from .ConfirmDelete import Ui_Dialog_confirmDelete
 from .SelectFile import Ui_Dialog_selectfile
 import re
 
-#from FixUnicode import FixUnicode
-#END
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -63,7 +63,7 @@ class Ui_Dialog_codes(object):
     headerLabels = ["Code", "Color", "Memo", "id", "rowid"]
 
     settings = None
-    freecode ={}
+    freecode = {}
     codeColors = CodeColors()
     filenames = []
     filename = {}  # contains filename and file id returned from SelectFile
@@ -74,10 +74,9 @@ class Ui_Dialog_codes(object):
     eventFilter = None
 
     def __init__(self, settings):
-        #self.freecode = []
         self.freecode = {}
         self.filenames = []
-        self.fileId = '' # file Id of the open file in Editor
+        self.fileId = ''  # file Id of the open file in Editor
         self.annotations = []
         self.settings = settings
         self.qfont = QtGui.QFont()
@@ -122,7 +121,7 @@ class Ui_Dialog_codes(object):
                     self.tableWidget_codes.setItem(x, self.COLOR_COLUMN, item)
                     self.tableWidget_codes.clearSelection()
 
-                    #update freecode list, database and currently viewed file
+                    # update freecode list, database and currently viewed file
                     self.freecode[x_code]['color'] = selectedColor['colname']
                     cur = self.settings['conn'].cursor()
                     cur.execute("update freecode set color=? where id=?", (self.freecode[x_code]['color'], self.freecode[x_code]['id']))
@@ -142,7 +141,7 @@ class Ui_Dialog_codes(object):
             else:
                 self.tableWidget_codes.setItem(x, self.MEMO_COLUMN, QtWidgets.QTableWidgetItem("Yes"))
 
-            #update freecode list and database
+            # update freecode list and database
             self.freecode[x_code]['memo'] = str(memo)
             cur = self.settings['conn'].cursor()
             cur.execute("update freecode set memo=? where id=?", (self.freecode[x_code]['memo'], self.freecode[x_code]['id']))
@@ -169,14 +168,15 @@ class Ui_Dialog_codes(object):
                 if val['name'] == newCodeText:
                     update = False
             if update:
-                #update freecode list and database
-                nrow = self.tableWidget_codes.rowCount()
+                # update freecode list and database
+                # nrow = self.tableWidget_codes.rowCount()
                 cur = self.settings['conn'].cursor()
                 cur.execute("update freecode set name=? where rowid=?", (newCodeText, x_code))
                 self.settings['conn'].commit()
                 # update filter for tooltip
                 self.eventFilter.setCodes(self.coding, self.freecode)
-            else:  #put the original text in the cell
+            else: 
+                # put the original text in the cell
                 self.tableWidget_codes.item(x, y).setText(self.freecode[x_code]['name'])
 
     def addCode(self):
@@ -193,7 +193,7 @@ class Ui_Dialog_codes(object):
             # update freecode list and database
             # need to generate a new id as the RQDA database does not have an autoincrement id field
             newid = 1
-            #for fc in self.freecode:
+            # for fc in self.freecode:
             for fc in self.freecode.values():
                 if fc['id'] >= newid:
                     newid = fc['id']+1
@@ -208,7 +208,7 @@ class Ui_Dialog_codes(object):
             self.settings['conn'].commit()
 
             # update table widget
-            #for codes in self.freecode:
+            # for codes in self.freecode:
             for codes in self.freecode:
                 self.tableWidget_codes.removeRow(0)
             self.fillTableWidget_codes()
@@ -655,7 +655,7 @@ class Ui_Dialog_codes(object):
         if not self.settings['showIDs']:
             self.tableWidget_codes.hideColumn(self.ID_COLUMN)
         self.tableWidget_codes.hideColumn(self.ROW_ID_COLUMN)
-    #END ADDIN
+    # END ADDIN
 
     def setupUi(self, Dialog_codes, settings):
         Dialog_codes.setObjectName(_fromUtf8("Dialog_codes"))
@@ -799,7 +799,7 @@ class TT_EventFilter(QtCore.QObject):
                     item['name'] = c['name']
 
     def eventFilter(self, receiver, event):
-        #QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), tip)
+        # QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), tip)
         if event.type() == QtCore.QEvent.ToolTip:
             helpEvent = QHelpEvent(event)
             cursor = QtGui.QTextCursor()
@@ -818,5 +818,5 @@ class TT_EventFilter(QtCore.QObject):
             if displayText != "":
                 receiver.setToolTip(displayText)
 
-        #Call Base Class Method to Continue Normal Event Processing
+        # Call Base Class Method to Continue Normal Event Processing
         return super(TT_EventFilter,self).eventFilter(receiver, event)
