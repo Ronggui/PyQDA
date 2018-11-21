@@ -61,7 +61,7 @@ class Ui_Dialog_manageFiles(object):
     NAME_COLUMN = 0
     ID_COLUMN = 3
     ROW_ID_COLUMN = 4
-    headerLabels = ["Name","Memo","Date","Id", "rowid"]
+    headerLabels = ["Name", "Memo", "Date", "Id", "rowid"]
     log = ""
 
     def __init__(self, settings):
@@ -169,7 +169,7 @@ class Ui_Dialog_manageFiles(object):
         if fileName == None or fileName == "":
             QtWidgets.QMessageBox.warning(None, 'Warning',"No filename was selected", QtWidgets.QMessageBox.Ok)
             return
-        #check for non-unique filename
+        # check for non-unique filename
         if any(d == fileName for d in self.sourcetext):
             QtWidgets.QMessageBox.warning(None, 'Warning',"Filename in use", QtWidgets.QMessageBox.Ok)
             return
@@ -183,6 +183,7 @@ class Ui_Dialog_manageFiles(object):
         cur.execute("select max(rowid) from source")
         current_rowid, = cur.fetchone()  # unpack a tuple
         next_rowid = 1 if current_rowid is None else int(current_rowid + 1)
+        next_rowid = str(next_rowid)
 
         # update database
         newFile = {'name':fileName, 'id':fileId, 'file': fileText, 'memo':"", 'owner':self.settings['codername'], 'date':datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"), 'dateM':"", 'status':1, 'rowid': next_rowid}
@@ -197,23 +198,8 @@ class Ui_Dialog_manageFiles(object):
             self.tableWidget_files.removeRow(0)
 
         self.sourcetext[next_rowid] = newFile
+        self.fillTableWidget_files()
 
-        for row, k in enumerate(self.sourcetext):
-            itm = self.sourcetext[k]
-            self.tableWidget_files.insertRow(row)
-            item = QtWidgets.QTableWidgetItem(itm['name'])
-            self.tableWidget_files.setItem(row,self.NAME_COLUMN, item)
-            item = QtWidgets.QTableWidgetItem(itm['date'])
-            self.tableWidget_files.setItem(row,self.DATE_COLUMN, item)
-            if itm['memo'] != None and itm['memo'] != "":
-                self.tableWidget_files.setItem(row, self.MEMO_COLUMN, QtWidgets.QTableWidgetItem("Yes"))
-            item = QtWidgets.QTableWidgetItem(str(itm['id']))
-            self.tableWidget_files.setItem(row, self.ID_COLUMN, item)
-            item = QtWidgets.QTableWidgetItem(str(itm['rowid']))
-            self.tableWidget_files.setItem(row, self.ROW_ID_COLUMN, item)
-
-        self.tableWidget_files.resizeColumnsToContents()
-        self.tableWidget_files.resizeRowsToContents()
 
     def importFile(self):
         """ Import files and store as plain text.
